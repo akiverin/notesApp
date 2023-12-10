@@ -9,7 +9,7 @@ const Home = () => {
       <ScrollView contentContainerStyle={styles.container}>
          {notes.map((item, index) => (
             <View key={index} style={(index + 1) % 5 == 3 ? styles.squareBig : styles.square}>
-               <Note title={item.title} date={item.date} isSquare={false} />
+               <Note title={item.title} date={item.date} color={item.color} />
             </View>
          ))}
       </ScrollView>
