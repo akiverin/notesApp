@@ -22,63 +22,51 @@ const CustomTabBarButton = ({ children, onPress }) => {
     </View>
   );
 };
-const HomeStackScreen = () => ( 
+const HomeStackScreen = () => (
   <HomeStack.Navigator>
-    <HomeStack.Screen name="Главная" component={HomeScreen} />
-    <HomeStack.Screen name="Создать" component={NewNoteScreen} />
-    <HomeStack.Screen name="Настройки" component={SettingsScreen} /> 
+    <HomeStack.Screen name="Home" component={HomeScreen} />
+    <HomeStack.Screen name="NewNote" component={NewNoteScreen} />
+    <HomeStack.Screen name="Settings" component={SettingsScreen} />
   </HomeStack.Navigator>
 );
 
 const NewNoteStackScreen = () => (
   <NewNoteStack.Navigator>
-    <NewNoteStack.Screen name="Создать" component={NewNoteScreen} /> 
-    <NewNoteStack.Screen name="Настройки" component={SettingsScreen} />
-  </NewNoteStack.Navigator> 
+    <NewNoteStack.Screen name="NewNote" component={NewNoteScreen} />
+    <NewNoteStack.Screen name="Settings" component={SettingsScreen} />
+  </NewNoteStack.Navigator>
 );
 
-const SettingsStackScreen = () => ( 
+const SettingsStackScreen = () => (
   <SettingsStack.Navigator>
-    <SettingsStack.Screen name="Настройки" component={SettingsScreen} />
-    <SettingsStack.Screen name="Главная" component={HomeScreen} /> 
+    <SettingsStack.Screen name="Settings" component={SettingsScreen} />
+    <SettingsStack.Screen name="Home" component={HomeScreen} />
   </SettingsStack.Navigator>
 );
 
-  const AppNavigation = () => {
-    return (
-      <Tab.Navigator
+const AppNavigation = () => {
+  return (
+    <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-          if (route.name === 'Главная') {
+          if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Создать') {
-            iconName = focused ? 'create' : 'create-outline';
-          } else if (route.name === 'Настройки') {
+          } else if (route.name === 'NewNote') {
+            iconName = focused ? 'add-circle' : 'add-circle-outline';
+          } else if (route.name === 'Settings') {
             iconName = focused ? 'settings' : 'settings-outline';
           }
           return <Ionicons name={iconName} size={size} color={color} />;
-        },
+        }
       })}
-      tabBarOptions={{
-        activeTintColor: 'tomato',
-        inactiveTintColor: 'gray',
-      }}
-      >
-        <Tab.Screen name="Главная" component={HomeScreen} />
-        <Tab.Screen name="Создать" component={NewNoteScreen} 
-        options={{
-          tabBarButton: (props) => (
-            <CustomTabBarButton {...props}>
-              <Ionicons name="add" size={24} color="white" />
-            </CustomTabBarButton>
-          ),
-        }}
-        />
-        <Tab.Screen name="Настройки" component={SettingsScreen} /> 
-      </Tab.Navigator>
-    );
-  };
+    >
+      <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Главная' }} />
+      <Tab.Screen name="NewNote" component={NewNoteScreen} options={{ title: 'Новая заметка' }} />
+      <Tab.Screen name="Settings" component={SettingsScreen} options={{ title: 'Настройки' }}/>
+    </Tab.Navigator>
+  );
+};
 
 export default AppNavigation;
 
