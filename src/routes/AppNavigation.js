@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
@@ -12,6 +13,16 @@ const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 const NewNoteStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
+
+const startNotes = [
+  { id: '1', title: 'Заголовок заметки 1', date: '01-01-2022' },
+  { id: '2', title: 'Заголовок заметки 2', date: '02-01-2022' },
+  { id: '3', title: 'Заголовок заметки 3', date: '03-01-2022' },
+  { id: '4', title: 'Заголовок заметки 4', date: '04-01-2022' },
+  { id: '5', title: 'Заголовок заметки 5', date: '05-01-2022' },
+]
+
+export const NotesContext = React.createContext();
 
 const CustomTabBarButton = ({ children, onPress }) => {
   return (
@@ -45,7 +56,12 @@ const SettingsStackScreen = () => (
 );
 
 const AppNavigation = () => {
+  const [notes, setNotes] = useState(startNotes);
+  const addNote = (newNote) => {
+    setNotes([...notes, newNote]);
+  }
   return (
+    <NotesContext.Provider value={{ notes, addNote }}>
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
@@ -65,6 +81,7 @@ const AppNavigation = () => {
       <Tab.Screen name="NewNote" component={NewNoteScreen} options={{ title: 'Новая заметка' }} />
       <Tab.Screen name="Settings" component={SettingsScreen} options={{ title: 'Настройки' }}/>
     </Tab.Navigator>
+    </NotesContext.Provider>
   );
 };
 
