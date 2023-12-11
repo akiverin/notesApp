@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { useState } from 'react';
+import React, { useReducer } from 'react';
+import notesReducer from '../notesReducer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
@@ -56,31 +56,53 @@ const SettingsStackScreen = () => (
 );
 
 const AppNavigation = () => {
-  const [notes, setNotes] = useState(startNotes);
+  const [notes, dispatch] = useReducer(notesReducer, startNotes);
+
   const addNote = (newNote) => {
-    setNotes([...notes, newNote]);
+    dispatch({
+      type: 'added',
+      id: Number(notes[notes.length-1].id) + 1,
+      title: newNote.title,
+      text: newNote.text,
+      color: newNote.color
+    });
   }
+
+  const changeNote = (note) => {
+    dispatch({
+      type: 'changed',
+      note: note,
+    });
+  }
+
+  const deleteNote = (noteId) => {
+    dispatch({
+      type: 'deleted',
+      id: noteId,
+    });
+  }
+
   return (
     <NotesContext.Provider value={{ notes, addNote }}>
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
-          if (route.name === 'Home') {
-            iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'NewNote') {
-            iconName = focused ? 'add-circle' : 'add-circle-outline';
-          } else if (route.name === 'Settings') {
-            iconName = focused ? 'settings' : 'settings-outline';
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            if (route.name === 'Home') {
+              iconName = focused ? 'home' : 'home-outline';
+            } else if (route.name === 'NewNote') {
+              iconName = focused ? 'add-circle' : 'add-circle-outline';
+            } else if (route.name === 'Settings') {
+              iconName = focused ? 'settings' : 'settings-outline';
+            }
+            return <Ionicons name={iconName} size={size} color={color} />;
           }
-          return <Ionicons name={iconName} size={size} color={color} />;
-        }
-      })}
-    >
-      <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Главная' }} />
-      <Tab.Screen name="NewNote" component={NewNoteScreen} options={{ title: 'Новая заметка' }} />
-      <Tab.Screen name="Settings" component={SettingsScreen} options={{ title: 'Настройки' }}/>
-    </Tab.Navigator>
+        })}
+      >
+        <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Главная' }} />
+        <Tab.Screen name="NewNote" component={NewNoteScreen} options={{ title: 'Новая заметка' }} />
+        <Tab.Screen name="Settings" component={SettingsScreen} options={{ title: 'Настройки' }}/>
+      </Tab.Navigator>
     </NotesContext.Provider>
   );
 };
