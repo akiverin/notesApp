@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useCallback } from 'react';
 import { View, TextInput, Platform, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { NotesContext } from '../routes/AppNavigation';
@@ -13,10 +13,10 @@ const NewNote = ({ navigation }) => {
     const { addNote } = useContext(NotesContext);
 
 
-    const handleColorSelect = (color) => {
+    const handleColorSelect = useCallback((color) => {
         setSelectedColor(color);
         setColorPickerVisible(false);
-    };
+    }, [setSelectedColor, setColorPickerVisible]);
 
     const saveNote = () => {
         const newNote = {
