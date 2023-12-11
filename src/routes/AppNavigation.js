@@ -15,11 +15,11 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const startNotes = [
-  { id: '1', title: 'Заголовок заметки 1', date: 'Mon Dec 11 2023 17:21:01 GMT+0300 (Москва, стандартное время)', color: '#d5b9fe' },
-  { id: '2', title: 'Заголовок заметки 2', date: 'Mon Dec 11 2023 17:21:01 GMT+0300 (Москва, стандартное время)', color: '#edcaaa' },
-  { id: '3', title: 'Заголовок заметки 3', date: 'Mon Dec 11 2023 17:21:01 GMT+0300 (Москва, стандартное время)', color: '#cadffd' },
-  { id: '4', title: 'Заголовок заметки 4', date: 'Mon Dec 11 2023 17:21:01 GMT+0300 (Москва, стандартное время)', color: '#ffafad' },
-  { id: '5', title: 'Заголовок заметки 5', date: 'Mon Dec 11 2023 17:21:01 GMT+0300 (Москва, стандартное время)', color: '#62ad9e' },
+  { id: '1', title: 'Заголовок заметки 1', date: '2023-10-11T20:27:16+03:00', color: '#d5b9fe' },
+  { id: '2', title: 'Заголовок заметки 2', date: '2022-12-11T20:27:16+03:00', color: '#edcaaa' },
+  { id: '3', title: 'Заголовок заметки 3', date: '2023-12-10T20:27:16+03:00', color: '#cadffd' },
+  { id: '4', title: 'Заголовок заметки 4', date: '2021-11-11T20:27:16+03:00', color: '#ffafad' },
+  { id: '5', title: 'Заголовок заметки 5', date: '2023-12-11T20:27:16+03:00', color: '#62ad9e' },
 ]
 
 export const NotesContext = React.createContext();
@@ -66,7 +66,7 @@ const AppNavigation = () => {
       id: Number(notes[notes.length-1].id) + 1,
       title: newNote.title,
       text: newNote.text,
-      color: newNote.color
+      color: newNote.color,
     });
   }
 

@@ -1,13 +1,23 @@
+import moment from 'moment'; // Импортируем библиотеку moment.js
+
 export default function tasksReducer(notes, action) {
     switch (action.type) {
       case 'added': {
+        console.log({
+            id: action.id,
+            title: action.title,
+            text: action.text,
+            color: action.color,
+            date: moment().format(),
+          },)
         return [
           ...notes,
           {
             id: action.id,
             title: action.title,
             text: action.text,
-            color: action.color
+            color: action.color,
+            date: moment(),
           },
         ];
       }
