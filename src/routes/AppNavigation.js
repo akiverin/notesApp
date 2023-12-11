@@ -1,25 +1,25 @@
 import React, { useReducer } from 'react';
 import notesReducer from '../notesReducer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+import NoteScreen from '../screens/NoteScreen'; 
 import HomeScreen from '../screens/HomeScreen';
 import NewNoteScreen from '../screens/NewNoteScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
 const Tab = createBottomTabNavigator();
-const HomeStack = createStackNavigator();
-const NewNoteStack = createStackNavigator();
-const SettingsStack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const startNotes = [
-  { id: '1', title: 'Заголовок заметки 1', date: '01-01-2022', color: '#d5b9fe' },
-  { id: '2', title: 'Заголовок заметки 2', date: '02-01-2022', color: '#edcaaa' },
-  { id: '3', title: 'Заголовок заметки 3', date: '03-01-2022', color: '#cadffd' },
-  { id: '4', title: 'Заголовок заметки 4', date: '04-01-2022', color: '#ffafad' },
-  { id: '5', title: 'Заголовок заметки 5', date: '05-01-2022', color: '#62ad9e' },
+  { id: '1', title: 'Заголовок заметки 1', date: 'Mon Dec 11 2023 17:21:01 GMT+0300 (Москва, стандартное время)', color: '#d5b9fe' },
+  { id: '2', title: 'Заголовок заметки 2', date: 'Mon Dec 11 2023 17:21:01 GMT+0300 (Москва, стандартное время)', color: '#edcaaa' },
+  { id: '3', title: 'Заголовок заметки 3', date: 'Mon Dec 11 2023 17:21:01 GMT+0300 (Москва, стандартное время)', color: '#cadffd' },
+  { id: '4', title: 'Заголовок заметки 4', date: 'Mon Dec 11 2023 17:21:01 GMT+0300 (Москва, стандартное время)', color: '#ffafad' },
+  { id: '5', title: 'Заголовок заметки 5', date: 'Mon Dec 11 2023 17:21:01 GMT+0300 (Москва, стандартное время)', color: '#62ad9e' },
 ]
 
 export const NotesContext = React.createContext();
@@ -33,27 +33,29 @@ const CustomTabBarButton = ({ children, onPress }) => {
     </View>
   );
 };
-const HomeStackScreen = () => (
-  <HomeStack.Navigator>
-    <HomeStack.Screen name="Home" component={HomeScreen} />
-    <HomeStack.Screen name="NewNote" component={NewNoteScreen} />
-    <HomeStack.Screen name="Settings" component={SettingsScreen} />
-  </HomeStack.Navigator>
-);
-
-const NewNoteStackScreen = () => (
-  <NewNoteStack.Navigator>
-    <NewNoteStack.Screen name="NewNote" component={NewNoteScreen} />
-    <NewNoteStack.Screen name="Settings" component={SettingsScreen} />
-  </NewNoteStack.Navigator>
-);
-
-const SettingsStackScreen = () => (
-  <SettingsStack.Navigator>
-    <SettingsStack.Screen name="Settings" component={SettingsScreen} />
-    <SettingsStack.Screen name="Home" component={HomeScreen} />
-  </SettingsStack.Navigator>
-);
+function AllTabs() {
+  return (
+    <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+              if (route.name === 'Home') {
+                iconName = focused ? 'home' : 'home-outline';
+              } else if (route.name === 'NewNote') {
+                iconName = focused ? 'add-circle' : 'add-circle-outline';
+              } else if (route.name === 'Settings') {
+                iconName = focused ? 'settings' : 'settings-outline';
+              }
+              return <Ionicons name={iconName} size={size} color={color} />;
+            }
+          })}
+        >
+          <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Главная' }} />
+          <Tab.Screen name="NewNote" component={NewNoteScreen} options={{ title: 'Новая заметка' }} />
+          <Tab.Screen name="Settings" component={SettingsScreen} options={{ title: 'Настройки' }}/>
+        </Tab.Navigator>
+  )
+}
 
 const AppNavigation = () => {
   const [notes, dispatch] = useReducer(notesReducer, startNotes);
@@ -83,26 +85,13 @@ const AppNavigation = () => {
   }
 
   return (
-    <NotesContext.Provider value={{ notes, addNote }}>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-            if (route.name === 'Home') {
-              iconName = focused ? 'home' : 'home-outline';
-            } else if (route.name === 'NewNote') {
-              iconName = focused ? 'add-circle' : 'add-circle-outline';
-            } else if (route.name === 'Settings') {
-              iconName = focused ? 'settings' : 'settings-outline';
-            }
-            return <Ionicons name={iconName} size={size} color={color} />;
-          }
-        })}
-      >
-        <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Главная' }} />
-        <Tab.Screen name="NewNote" component={NewNoteScreen} options={{ title: 'Новая заметка' }} />
-        <Tab.Screen name="Settings" component={SettingsScreen} options={{ title: 'Настройки' }}/>
-      </Tab.Navigator>
+    <NotesContext.Provider value={{ notes, addNote, deleteNote }}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Start" component={AllTabs} />
+          <Stack.Screen name="Note" component={NoteScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </NotesContext.Provider>
   );
 };

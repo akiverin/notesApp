@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, Platform, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { NotesContext } from '../routes/AppNavigation';
 import ColorPicker from '../components/ColorPicker';
@@ -107,17 +107,20 @@ const styles = StyleSheet.create({
     },
     titleInput: {
         height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 10,
         paddingHorizontal: 10,
         borderWidth: 0,
         fontSize: 36,
-        outlineWidth: 0,
         backgroundColor: 'transparent',
-        outline: 'none',
         fontWeight: '400',
         marginBottom: 20,
+        ...Platform.select({
+            web: {
+              outlineWidth: 0
+            },
+            default: {
+              borderWidth: 0
+            }
+          })
     },
     textInput: {
         flex: 1,
@@ -127,7 +130,14 @@ const styles = StyleSheet.create({
         textAlignVertical: 'top',
         borderWidth: 0,
         fontSize: 20,
-        outlineWidth: 0,
+        ...Platform.select({
+            web: {
+              outlineWidth: 0
+            },
+            default: {
+              borderWidth: 0
+            }
+          })
     },
     placeholder: {
         color: 'rgba(0, 0, 0, 0.5)',
