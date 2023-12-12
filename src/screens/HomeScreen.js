@@ -7,50 +7,93 @@ import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
 
 const Home = () => {
-   const { notes } = useContext(NotesContext);
+   const { notes, deleteNote } = useContext(NotesContext);
    const navigation = useNavigation();
    const [sortType, setSortType] = useState('asc');
+   const [longPressTimer, setLongPressTimer] = useState(null);
+   const [selectedNotes, setSelectedNotes] = useState([]);
 
+   const startLongPress = (note) => {
+      setLongPressTimer(setTimeout(() => {
+         setSelectedNotes(prevSelectedNotes => [...prevSelectedNotes, note.id]);
+      }, 400));  
+   };
+
+   const endLongPress = () => {
+      clearTimeout(longPressTimer);
+   };
+
+   const pressNote = (note) => {
+      clearTimeout(longPressTimer);
+      if (selectedNotes.length == 0) {
+         navigation.navigate('Note', {
+            id: note.id,
+            title: note.title,
+            text: note.text,
+            date: moment(note.date).locale('ru').format('D MMM YYYY')
+         });
+       } else {
+         if (selectedNotes.includes(note.id) && selectedNotes.length > 1) {
+            setSelectedNotes(selectedNotes.filter(item => item !== note.id))
+         } else {
+            setSelectedNotes(prevSelectedNotes => [...prevSelectedNotes, note.id]);
+         }
+       }
+   };
+   
    const sortedNotes = useMemo(() => {
       const sortFunction = (a, b) => {
-        if (sortType === 'asc') {
-          return a.date > b.date ? 1 : -1;
-        } else if (sortType === 'desc') {
-          return a.date < b.date ? 1 : -1;
-        } else {
-          return 0;
-        }
+         if (sortType === 'asc') {
+            return a.date > b.date ? 1 : -1;
+         } else if (sortType === 'desc') {
+            return a.date < b.date ? 1 : -1;
+         } else {
+            return 0;
+         }
       };
     
       const formattedNotes = notes.map(note => ({
-        ...note,
-        date: new Date(note.date),
+         ...note,
+         date: new Date(note.date),
       }));
     
       return formattedNotes.sort(sortFunction);
-    }, [notes, sortType]);
-
-   const pressNote = (note) => {
-      navigation.navigate('Note', { id: note.id, title: note.title, text: note.text, date: moment(note.date).locale('ru').format('D MMM YYYY') });
-   };
+   }, [notes, sortType]);
 
    const handleSortToggle = () => {
       setSortType(prevSortType => prevSortType === 'asc' ? 'desc' : 'asc');
    };
+
+   const handleDeleteNotes = () => {
+      selectedNotes.forEach(noteId => deleteNote(noteId))
+      setSelectedNotes([]);
+   }
    
    return (
       <ScrollView>
          <View style={styles.sortButtonContainer}>
             <Text style={styles.textTitle}>Мои заметки</Text>
-            <TouchableOpacity style={styles.sortButton} onPress={handleSortToggle}>
-               <Ionicons name={sortType === 'asc' ? 'arrow-up' : 'arrow-down'} size={20} color="#555" style={{alignSelf: 'center'}}/>
-               {sortType && <Text style={{ color: '#555', fontWeight: '600', fontSize: 14 }}>{sortType === 'asc' ? 'Сначала старые' : 'Сначала новые'}</Text>}
-            </TouchableOpacity>
+            {selectedNotes.length !== 0 ? 
+               <TouchableOpacity onPress={handleDeleteNotes} style={styles.backButton}>
+                  <Ionicons name="trash" size={22} color="#555" style={{alignSelf: 'center' }}/>
+               </TouchableOpacity> 
+               : 
+               <TouchableOpacity style={styles.sortButton} onPress={handleSortToggle}>
+                  <Ionicons name={sortType === 'asc' ? 'arrow-up' : 'arrow-down'} size={20} color="#555" style={{alignSelf: 'center'}}/>
+                  {sortType && <Text style={{ color: '#555', fontWeight: '600', fontSize: 14 }}>{sortType === 'asc' ? 'Сначала старые' : 'Сначала новые'}</Text>}
+               </TouchableOpacity>
+            }
          </View>
          <ScrollView contentContainerStyle={styles.container}>
          {sortedNotes.map((item, index) => (
-            <TouchableOpacity key={index} style={(index + 1) % 5 == 3 ? styles.squareBig : styles.square} onPress={() => pressNote(item)}>
-                  <Note title={item.title} date={item.date} color={item.color} />
+            <TouchableOpacity 
+               key={index} 
+               style={(index + 1) % 5 == 3 ? (selectedNotes.includes(item.id) ? {...styles.squareBig, ...styles.selectedNote} : styles.squareBig) : (selectedNotes.includes(item.id) ? {...styles.square, ...styles.selectedNote} : styles.square)}
+               onPress={() => pressNote(item)}
+               onPressIn={() => startLongPress(item)} // Добавляем обработчик начала нажатия
+               onPressOut={endLongPress} // Добавляем обработчик конца нажатия
+            >
+               <Note title={item.title} date={item.date} color={item.color} />
             </TouchableOpacity>
          ))}
          </ScrollView>  
@@ -97,6 +140,17 @@ const styles = StyleSheet.create({
       fontSize: 22,
       fontWeight: '400',
    },
+   selectedNote: {
+      opacity: 0.5,  
+   },
+   backButton: {
+      backgroundColor: 'rgb(255,255,255)',
+      padding: 10,
+      borderRadius: 8,
+      height: 46,
+      width: 46,
+      justifyContent: 'center',
+  },
 });
 
 export default Home;

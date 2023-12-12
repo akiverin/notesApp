@@ -11,22 +11,21 @@ const NoteScreen = ({ navigation, route }) => {
       console.log('Режим редактирования')
    };
 
-   const handleDelete = () => {
-      deleteNote(id);
-      navigation.goBack();
+   const handleDelete = (noteId) => {
+      deleteNote(noteId);
    };
 
    return (
       <View style={{ flex: 1, padding: 16 }}>
          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 24, }}>
-            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+            <TouchableOpacity style={styles.iconButton} onPress={() => navigation.goBack()}>
                <Ionicons name="chevron-back-outline" size={22} color="#555" style={{alignSelf: 'center'}}/>
             </TouchableOpacity>
             <View style={{flexDirection: 'row', gap: 10}}>
-               <TouchableOpacity style={styles.backButton} onPress={handleEdit}>
+               <TouchableOpacity style={styles.iconButton} onPress={handleEdit}>
                   <Ionicons name="create" size={22} color="#555" style={{alignSelf: 'center'}}/>
                </TouchableOpacity>
-               <TouchableOpacity style={styles.backButton} onPress={handleDelete}>
+               <TouchableOpacity style={styles.iconButton} onPress={()=>{handleDelete(id); navigation.goBack();}}>
                   <Ionicons name="trash" size={22} color="#555" style={{alignSelf: 'center' }}/>
                </TouchableOpacity>
             </View>
@@ -53,7 +52,7 @@ const styles = StyleSheet.create({
        fontSize: 16,
        fontWeight: 'bold',
    },
-   backButton: {
+   iconButton: {
        backgroundColor: 'rgb(255,255,255)',
        padding: 10,
        borderRadius: 8,
