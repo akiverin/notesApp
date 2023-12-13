@@ -1,8 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useDebugValue } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { NotesContext } from '../routes/AppNavigation';
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
+
+export function formatDate(obj){
+   const newDate = moment(obj).locale('ru').format('D MMM YYYY')
+   useDebugValue({obj, newDate});
+   return newDate;
+}
 
 const NoteScreen = ({ navigation, route }) => {
    const { deleteNote } = useContext(NotesContext);
@@ -41,7 +47,7 @@ const NoteScreen = ({ navigation, route }) => {
          <ScrollView>
             <Text style={styles.text}>{text}</Text>
          </ScrollView>
-            <Text style={styles.date}>{moment(date).locale('ru').format('D MMM YYYY')}</Text>
+            <Text style={styles.date}>{formatDate(date)}</Text>
       </View>
    );
 };

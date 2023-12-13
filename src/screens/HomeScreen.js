@@ -18,7 +18,6 @@ const Home = () => {
          setSelectedNotes(prevSelectedNotes => [...prevSelectedNotes, note.id]);
       }, 400));  
    };
-
    const endLongPress = () => {
       clearTimeout(longPressTimer);
    };

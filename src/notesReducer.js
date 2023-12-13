@@ -2,14 +2,7 @@ import moment from 'moment';
 
 export default function tasksReducer(notes, action) {
     switch (action.type) {
-      case 'added': {
-        console.log({
-            id: action.id,
-            title: action.title,
-            text: action.text,
-            color: action.color,
-            date: moment().format(),
-          },)
+      case 'added': {        
         return [
           ...notes,
           {

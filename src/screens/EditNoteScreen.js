@@ -1,15 +1,14 @@
 import React, { useContext, useState } from 'react';
-import { View, Platform, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView } from 'react-native';
+import { View, Platform, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { NotesContext } from '../routes/AppNavigation';
-
 const EditNoteScreen = ({ navigation, route }) => {
    const note = route.params;
    const [title, setTitle] = useState(note.title);
    const [text, setText] = useState(note.text);
    const [inputHeight, setInputHeight] = useState(40);
    const { changeNote } = useContext(NotesContext);
-
+   
    const handleEdit = () => {
       const editedNote = {
             id: note.id,
@@ -17,7 +16,6 @@ const EditNoteScreen = ({ navigation, route }) => {
             text: text,
       };
       changeNote(editedNote);
-      navigation.navigate('Home');
    };
 
    return (
@@ -26,7 +24,7 @@ const EditNoteScreen = ({ navigation, route }) => {
             <TouchableOpacity style={styles.saveButton} onPress={() => navigation.goBack()}>
                <Ionicons name="chevron-back-outline" size={22} color="#555" style={{ alignSelf: 'center' }} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.saveButton} onPress={handleEdit}>
+            <TouchableOpacity style={styles.saveButton} onPress={()=>{handleEdit(); navigation.navigate('Home');}}>
                <Ionicons name="save" size={22} color="#555" style={{ alignSelf: 'center' }} />
             </TouchableOpacity>
          </View>
