@@ -1,4 +1,4 @@
-import moment from 'moment'; // Импортируем библиотеку moment.js
+import moment from 'moment';
 
 export default function tasksReducer(notes, action) {
     switch (action.type) {
@@ -24,7 +24,13 @@ export default function tasksReducer(notes, action) {
       case 'changed': {
         return notes.map((n) => {
           if (n.id === action.note.id) {
-            return action.note;
+            return {
+                id: n.id,
+                title: action.note.title,
+                text: action.note.text,
+                date: n.date,
+                color: n.color,
+            };
           } else {
             return n;
           }

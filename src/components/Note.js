@@ -15,7 +15,7 @@ const Note = ({ title, date, color, isSquare }) => {
 
    return (
       <View style={noteStyle}>
-         <Text style={{ fontSize: 24, fontWeight: '400' }}>{title}</Text>
+         <Text style={{ fontSize: 22, fontWeight: '400' }}>{title}</Text>
          <Text style={{ fontSize: 18, opacity: 0.5,position: 'absolute', bottom: 18, right: 18, fontWeight: '300' }}>{formattedDate}</Text>
       </View>
    );

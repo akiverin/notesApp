@@ -9,6 +9,7 @@ const NewNote = ({ navigation }) => {
     const [selectedColor, setSelectedColor] = useState(null);
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
+    const [inputHeight, setInputHeight] = useState(40);
 
     const inputRef = useRef(null);
 
@@ -60,7 +61,12 @@ const NewNote = ({ navigation }) => {
                 </View>
             </View>
             <TextInput
-                style={styles.titleInput}
+                style={[styles.titleInput,{height: inputHeight}]}
+                multiline={true}
+                numberOfLines={4}
+                onContentSizeChange={(e) => {
+                setInputHeight(e.nativeEvent.contentSize.height);
+                }}
                 placeholderTextColor={styles.placeholder.color}
                 placeholder="Заголовок заметки"
                 value={title}

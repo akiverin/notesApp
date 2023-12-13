@@ -1,14 +1,21 @@
 import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { NotesContext } from '../routes/AppNavigation';
 import { Ionicons } from '@expo/vector-icons';
+import moment from 'moment';
 
 const NoteScreen = ({ navigation, route }) => {
    const { deleteNote } = useContext(NotesContext);
-   const { id, title, text, date } = route.params;
+   const { id, title, text, date, color } = route.params;
 
    const handleEdit = () => {
-      console.log('Режим редактирования')
+      navigation.navigate('Edit', {
+         id: id,
+         title: title,
+         text: text,
+         color: color,
+         date: moment(date).locale('ru').format('D MMM YYYY'),
+      });
    };
 
    const handleDelete = (noteId) => {
@@ -30,9 +37,11 @@ const NoteScreen = ({ navigation, route }) => {
                </TouchableOpacity>
             </View>
          </View>
-         <Text style={styles.title}>{title}</Text>
-         <Text style={{ marginTop: 10 }}>{text}</Text>
-         <Text style={{ marginTop: 20, opacity: 0.5 }}>{date}</Text>
+            <Text style={styles.title}>{title}</Text>
+         <ScrollView>
+            <Text style={styles.text}>{text}</Text>
+         </ScrollView>
+            <Text style={styles.date}>{moment(date).locale('ru').format('D MMM YYYY')}</Text>
       </View>
    );
 };
@@ -68,6 +77,18 @@ const styles = StyleSheet.create({
       fontWeight: '400',
       marginTop: 20,
       marginBottom: 20,
+   },
+   text: {
+      marginTop: 10, 
+      paddingHorizontal: 10, 
+      lineHeight: '150%', 
+      fontSize: 18,
+   },
+   date: {
+      marginVertical: 20, 
+      opacity: 0.5, 
+      paddingHorizontal: 10,
+      textAlign: 'end',
    }
 })
 

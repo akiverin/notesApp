@@ -30,7 +30,8 @@ const Home = () => {
             id: note.id,
             title: note.title,
             text: note.text,
-            date: moment(note.date).locale('ru').format('D MMM YYYY')
+            color: note.color,
+            date: moment(note.date).toDate(),
          });
        } else {
          if (selectedNotes.includes(note.id) && selectedNotes.length > 1) {
