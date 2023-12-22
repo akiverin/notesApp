@@ -1,8 +1,8 @@
 import React, { useState, useContext, useCallback, useRef, useEffect } from 'react';
-import { View, TextInput, Platform, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, TextInput, Platform, StyleSheet} from 'react-native';
 import { NotesContext } from '../routes/AppNavigation';
 import ColorPicker from '../components/ColorPicker';
+import IconButton from '../components/UI/IconButton';
 
 const NewNote = ({ navigation }) => {
     const [colorPickerVisible, setColorPickerVisible] = useState(false);
@@ -45,20 +45,10 @@ const NewNote = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Ionicons
-                    style={styles.backButton}
-                    name="chevron-back-outline"
-                    size={22}
-                    color="#555"
-                    onPress={() => navigation.goBack()}
-                />
+                <IconButton icon="chevron-back-outline" onPress={() => navigation.goBack()} />
                 <View style={{display: 'flex', flexDirection: 'row', gap: 4}}>
-                    <TouchableOpacity style={{ ...styles.saveButton, backgroundColor: selectedColor !== null ? selectedColor.color : '#fff' }} onPress={() => setColorPickerVisible(true)}>
-                        <Text style={{ color: '#555', fontWeight: '600', fontSize: 14, }}>Цвет</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.saveButton} onPress={saveNote}>
-                        <Text style={{ color: '#555', fontWeight: '600', fontSize: 14, }}>Сохранить</Text>
-                    </TouchableOpacity>
+                    <IconButton title="Цвет" style={{ backgroundColor: selectedColor !== null ? selectedColor.color : '#fff' }} onPress={() => setColorPickerVisible(true)} />
+                    <IconButton title="Сохранить" onPress={saveNote}/>
                 </View>
             </View>
             <TextInput

@@ -3,8 +3,8 @@ import { View, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-nati
 import { useNavigation } from '@react-navigation/native';
 import Note from '../components/Note';
 import { NotesContext } from '../routes/AppNavigation';
-import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
+import IconButton from '../components/UI/IconButton';
 
 const Home = () => {
    const { notes, deleteNote } = useContext(NotesContext);
@@ -18,7 +18,7 @@ const Home = () => {
             title: note.title,
             text: note.text,
             color: note.color,
-            date: moment(note.date).toDate(),
+            date: moment(note.date).format(),
          });
    };
    
@@ -54,15 +54,10 @@ const Home = () => {
       <ScrollView>
          <View style={styles.sortButtonContainer}>
             <Text style={styles.textTitle}>Мои заметки</Text>
-            {selectedNotes.length !== 0 ? 
-               <TouchableOpacity onPress={handleDeleteNotes} style={styles.backButton}>
-                  <Ionicons name="trash" size={22} color="#555" style={{alignSelf: 'center' }}/>
-               </TouchableOpacity> 
+            {selectedNotes.length !== 0 ?
+               <IconButton icon="trash" onPress={handleDeleteNotes}/>
                : 
-               <TouchableOpacity style={styles.sortButton} onPress={handleSortToggle}>
-                  <Ionicons name={sortType === 'asc' ? 'arrow-up' : 'arrow-down'} size={20} color="#555" style={{alignSelf: 'center'}}/>
-                  {sortType && <Text style={{ color: '#555', fontWeight: '600', fontSize: 14 }}>{sortType === 'asc' ? 'Сначала старые' : 'Сначала новые'}</Text>}
-               </TouchableOpacity>
+               <IconButton icon={sortType === 'asc' ? 'arrow-up' : 'arrow-down'} title={sortType === 'asc' ? 'Сначала старые' : 'Сначала новые'} onPress={()=>handleSortToggle()}/>
             }
          </View>
          <ScrollView contentContainerStyle={styles.container}>
@@ -118,9 +113,6 @@ const styles = StyleSheet.create({
    textTitle: {
       fontSize: 22,
       fontWeight: '400',
-   },
-   selectedNote: {
-      opacity: 0.5,  
    },
    backButton: {
       backgroundColor: 'rgb(255,255,255)',

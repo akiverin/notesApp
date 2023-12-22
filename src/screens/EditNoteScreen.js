@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { View, Platform, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { NotesContext } from '../routes/AppNavigation';
+import IconButton from '../components/UI/IconButton';
 const EditNoteScreen = ({ navigation, route }) => {
    const note = route.params;
    const [title, setTitle] = useState(note.title);
@@ -21,12 +21,8 @@ const EditNoteScreen = ({ navigation, route }) => {
    return (
       <View style={{ flex: 1, padding: 16 }}>
          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',  }}>
-            <TouchableOpacity style={styles.saveButton} onPress={() => navigation.goBack()}>
-               <Ionicons name="chevron-back-outline" size={22} color="#555" style={{ alignSelf: 'center' }} />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.saveButton} onPress={()=>{handleEdit(); navigation.navigate('HomeStack');}}>
-               <Ionicons name="save" size={22} color="#555" style={{ alignSelf: 'center' }} />
-            </TouchableOpacity>
+            <IconButton icon="chevron-back-outline" onPress={() => navigation.goBack()}/>
+            <IconButton icon="save" onPress={()=>{handleEdit(); navigation.navigate('HomeStack')}}/>
          </View>
          <Text style={styles.date}>{note.date}</Text>
          <TextInput
