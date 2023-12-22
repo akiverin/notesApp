@@ -1,4 +1,4 @@
-import React, { useContext, useDebugValue } from 'react';
+import React, { useState, useContext, useDebugValue, useLayoutEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { NotesContext } from '../routes/AppNavigation';
 import { Ionicons } from '@expo/vector-icons';
@@ -15,7 +15,7 @@ const NoteScreen = ({ navigation, route }) => {
    const { id, title, text, date, color } = route.params;
 
    const handleEdit = () => {
-      navigation.navigate('Edit', {
+      navigation.navigate('EditStack', {
          id: id,
          title: title,
          text: text,
@@ -28,9 +28,22 @@ const NoteScreen = ({ navigation, route }) => {
       deleteNote(noteId);
    };
 
+   const [dimensions, setDimensions] = useState({ width: 0, height: 0 }); 
+   useLayoutEffect(() => {
+      function onLayout() {
+         setDimensions({
+            width: window.innerWidth, 
+            height: window.innerHeight,
+         }); 
+      }
+      window.addEventListener('resize', onLayout);
+      onLayout();
+      return () => window.removeEventListener('resize', onLayout); 
+   }, []);
+
    return (
       <View style={{ flex: 1, padding: 16 }}>
-         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 24, }}>
+         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
             <TouchableOpacity style={styles.iconButton} onPress={() => navigation.goBack()}>
                <Ionicons name="chevron-back-outline" size={22} color="#555" style={{alignSelf: 'center'}}/>
             </TouchableOpacity>
@@ -43,9 +56,9 @@ const NoteScreen = ({ navigation, route }) => {
                </TouchableOpacity>
             </View>
          </View>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={{...styles.title, fontSize: dimensions.width<260?24:32}}>{title}</Text>
          <ScrollView>
-            <Text style={styles.text}>{text}</Text>
+            <Text style={{...styles.text, fontSize: dimensions.width<260?14:18}}>{text}</Text>
          </ScrollView>
             <Text style={styles.date}>{formatDate(date)}</Text>
       </View>
@@ -87,14 +100,14 @@ const styles = StyleSheet.create({
    text: {
       marginTop: 10, 
       paddingHorizontal: 10, 
-      lineHeight: '150%', 
+      lineHeight: 26, 
       fontSize: 18,
    },
    date: {
       marginVertical: 20, 
       opacity: 0.5, 
       paddingHorizontal: 10,
-      textAlign: 'end',
+      textAlign: 'right',
    }
 })
 

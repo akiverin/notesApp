@@ -10,35 +10,16 @@ const Home = () => {
    const { notes, deleteNote } = useContext(NotesContext);
    const navigation = useNavigation();
    const [sortType, setSortType] = useState('asc');
-   const [longPressTimer, setLongPressTimer] = useState(null);
    const [selectedNotes, setSelectedNotes] = useState([]);
 
-   const startLongPress = (note) => {
-      setLongPressTimer(setTimeout(() => {
-         setSelectedNotes(prevSelectedNotes => [...prevSelectedNotes, note.id]);
-      }, 400));  
-   };
-   const endLongPress = () => {
-      clearTimeout(longPressTimer);
-   };
-
    const pressNote = (note) => {
-      clearTimeout(longPressTimer);
-      if (selectedNotes.length == 0) {
-         navigation.navigate('Note', {
+         navigation.navigate('NoteStack', {
             id: note.id,
             title: note.title,
             text: note.text,
             color: note.color,
             date: moment(note.date).toDate(),
          });
-       } else {
-         if (selectedNotes.includes(note.id) && selectedNotes.length > 1) {
-            setSelectedNotes(selectedNotes.filter(item => item !== note.id))
-         } else {
-            setSelectedNotes(prevSelectedNotes => [...prevSelectedNotes, note.id]);
-         }
-       }
    };
    
    const sortedNotes = useMemo(() => {
@@ -90,8 +71,6 @@ const Home = () => {
                key={index} 
                style={(index + 1) % 5 == 3 ? (selectedNotes.includes(item.id) ? {...styles.squareBig, ...styles.selectedNote} : styles.squareBig) : (selectedNotes.includes(item.id) ? {...styles.square, ...styles.selectedNote} : styles.square)}
                onPress={() => pressNote(item)}
-               onPressIn={() => startLongPress(item)} // Добавляем обработчик начала нажатия
-               onPressOut={endLongPress} // Добавляем обработчик конца нажатия
             >
                <Note title={item.title} date={item.date} color={item.color} />
             </TouchableOpacity>

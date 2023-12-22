@@ -9,7 +9,7 @@ const NewNote = ({ navigation }) => {
     const [selectedColor, setSelectedColor] = useState(null);
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
-    const [inputHeight, setInputHeight] = useState(40);
+    const [inputHeight, setInputHeight] = useState(43);
 
     const inputRef = useRef(null);
 
@@ -37,6 +37,7 @@ const NewNote = ({ navigation }) => {
         addNote(newNote);
         setTitle('');
         setText('');
+        setInputHeight(43);
         setSelectedColor(null);
         navigation.goBack();
     };
@@ -65,7 +66,7 @@ const NewNote = ({ navigation }) => {
                 multiline={true}
                 numberOfLines={4}
                 onContentSizeChange={(e) => {
-                setInputHeight(e.nativeEvent.contentSize.height);
+                setInputHeight(Math.max(e.nativeEvent.contentSize.height, 43));
                 }}
                 placeholderTextColor={styles.placeholder.color}
                 placeholder="Заголовок заметки"

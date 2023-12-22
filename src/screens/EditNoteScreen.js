@@ -20,11 +20,11 @@ const EditNoteScreen = ({ navigation, route }) => {
 
    return (
       <View style={{ flex: 1, padding: 16 }}>
-         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 24, }}>
+         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',  }}>
             <TouchableOpacity style={styles.saveButton} onPress={() => navigation.goBack()}>
                <Ionicons name="chevron-back-outline" size={22} color="#555" style={{ alignSelf: 'center' }} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.saveButton} onPress={()=>{handleEdit(); navigation.navigate('Home');}}>
+            <TouchableOpacity style={styles.saveButton} onPress={()=>{handleEdit(); navigation.navigate('HomeStack');}}>
                <Ionicons name="save" size={22} color="#555" style={{ alignSelf: 'center' }} />
             </TouchableOpacity>
          </View>
@@ -68,19 +68,12 @@ const styles = StyleSheet.create({
       fontSize: 16,
       fontWeight: 'bold',
    },
-   backButton: {
+   saveButton: {
       backgroundColor: 'rgb(255,255,255)',
       padding: 10,
       borderRadius: 8,
       height: 46,
       width: 46,
-      justifyContent: 'center',
-   },
-   saveButton: {
-      backgroundColor: 'rgb(255,255,255)',
-      padding: 14,
-      borderRadius: 8,
-      height: 46,
       justifyContent: 'center',
    },
    titleInput: {
@@ -108,7 +101,7 @@ const styles = StyleSheet.create({
       textAlignVertical: 'top',
       borderWidth: 0,
       fontSize: 20,
-      lineHeight: '150%',
+      lineHeight: 30,
       ...Platform.select({
          web: {
             outlineWidth: 0
@@ -133,7 +126,7 @@ const styles = StyleSheet.create({
       marginTop: 20,
       marginBottom: 4, 
       opacity: 0.5,
-      textAlign: 'end',
+      textAlign: 'right',
    },
 });
 

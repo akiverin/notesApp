@@ -1,8 +1,10 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import notesReducer from '../notesReducer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -11,9 +13,12 @@ import HomeScreen from '../screens/HomeScreen';
 import NewNoteScreen from '../screens/NewNoteScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import EditNoteScreen from '../screens/EditNoteScreen';
+import AboutScreen from '../screens/AboutScreen';
 
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
+const NativeStack = createNativeStackNavigator();
+const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
 const startNotes = [
   { id: '1', title: 'Покупка авиабилетов', date: '2023-10-11T20:27:16+03:00', color: '#d5b9fe', text: 'Планирование поездки и поиск оптимальных билетов' },
@@ -25,37 +30,52 @@ const startNotes = [
 
 export const NotesContext = React.createContext();
 
-const CustomTabBarButton = ({ children, onPress }) => {
+function MainStackNavigator(){
   return (
-    <View style={styles.tabBarCustomButton}>
-      <TouchableOpacity onPress={onPress}>
-        {children}
-      </TouchableOpacity>
-    </View>
-  );
-};
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="HomeStack" component={HomeScreen} />
+      <Stack.Screen name="NoteStack" component={NoteScreen} />
+      <Stack.Screen name="EditStack" component={EditNoteScreen} />
+      <Stack.Screen name="NewNoteStack" component={NewNoteScreen} />
+      <Stack.Screen name="SettingStack" component={SettingsScreen} />
+    </Stack.Navigator>
+  )
+}
+
+function AllStackNavigator(){
+  return (
+    <NativeStack.Navigator screenOptions={{ headerShown: false }}>
+      <NativeStack.Screen name="AboutNativeStack" component={AboutScreen} />
+      <NativeStack.Screen name="HomeNativeStack" component={HomeScreen} />
+      <NativeStack.Screen name="NewNoteNativeStack" component={NewNoteScreen} />
+      <NativeStack.Screen name="SettingNativeStack" component={SettingsScreen} />
+    </NativeStack.Navigator>
+  )
+}
+
 function MainTabNavigator() {
   return (
     <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-              if (route.name === 'Home') {
-                iconName = focused ? 'home' : 'home-outline';
-              } else if (route.name === 'NewNote') {
-                iconName = focused ? 'add-circle' : 'add-circle-outline';
-              } else if (route.name === 'Settings') {
-                iconName = focused ? 'settings' : 'settings-outline';
-              }
-              return <Ionicons name={iconName} size={size} color={color} />;
-            }
-          })}
-        >
-          <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Главная' }} />
-          <Tab.Screen name="NewNote" component={NewNoteScreen} options={{ title: 'Новая заметка' }} />
-          <Tab.Screen name="Settings" component={SettingsScreen} options={{ title: 'Настройки' }}/>
-        </Tab.Navigator>
-  )
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          if (route.name === 'Home') {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'NewNote') {
+            iconName = focused ? 'add-circle' : 'add-circle-outline';
+          } else if (route.name === 'Settings') {
+            iconName = focused ? 'settings' : 'settings-outline';
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+        }
+      })}
+    >
+      <Tab.Screen name="Home" component={MainStackNavigator} options={{ title: 'Главная' }} />
+      <Tab.Screen name="NewNote" component={NewNoteScreen} options={{ title: 'Новая заметка' }} />
+      <Tab.Screen name="Settings" component={SettingsScreen} options={{ title: 'Настройки' }}/>
+    </Tab.Navigator>
+)
 }
 
 const AppNavigation = () => {
@@ -88,26 +108,21 @@ const AppNavigation = () => {
   return (
     <NotesContext.Provider value={{ notes, addNote, deleteNote, changeNote }}>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Start" component={MainTabNavigator} />
-          <Stack.Screen name="Note" component={NoteScreen} />
-          <Stack.Screen name="Edit" component={EditNoteScreen} />
-        </Stack.Navigator>
+        <Drawer.Navigator>
+          <Drawer.Screen 
+            name="HomeDrawer" 
+            options={{title: 'Мои заметки'}}
+            component={MainTabNavigator} 
+          />
+          <Drawer.Screen 
+            name="AboutDrawer"
+            options={{title: 'О приложении'}}
+            component={AllStackNavigator}
+          />
+        </Drawer.Navigator>
       </NavigationContainer>
     </NotesContext.Provider>
   );
 };
 
 export default AppNavigation;
-
-const styles = StyleSheet.create({
-  tabBarCustomButton: {
-    width: 60,
-    height: 60,
-    backgroundColor: 'tomato',
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    top: -20,
-  },
-});
