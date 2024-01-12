@@ -2,11 +2,15 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import moment from 'moment';
 
-const Note = ({ title, date, color, isSquare }) => {
-   const formattedDate = moment(date).locale('ru').format('D MMM YYYY');
-
+const Note = ({ title, date, color }) => {
+   const currentYear = moment().locale('ru').format('YYYY');
+   const dateYear = moment(date).locale('ru').format('YYYY');
+   const dateFormat = dateYear === currentYear ? 'D MMM' : 'D MMM YYYY';
+   
+   const formattedDate = moment(date).locale('ru').format(dateFormat);
+   
    const noteStyle = {
-      backgroundColor: color,
+      background: color,
       padding: 18,
       width: '100%',
       height: '100%',

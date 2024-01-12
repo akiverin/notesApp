@@ -47,7 +47,7 @@ const NewNote = ({ navigation }) => {
             <View style={styles.header}>
                 <IconButton icon="chevron-back-outline" onPress={() => navigation.goBack()} />
                 <View style={{display: 'flex', flexDirection: 'row', gap: 4}}>
-                    <IconButton title="Цвет" style={{ backgroundColor: selectedColor !== null ? selectedColor.color : '#fff' }} onPress={() => setColorPickerVisible(true)} />
+                    <IconButton title="Цвет" style={{ background: selectedColor !== null ? selectedColor.color : '#fff' }} onPress={() => setColorPickerVisible(true)} />
                     <IconButton title="Сохранить" onPress={saveNote}/>
                 </View>
             </View>
