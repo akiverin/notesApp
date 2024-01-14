@@ -10,16 +10,16 @@ const Note = ({ title, date, color }) => {
    const formattedDate = moment(date).locale('ru').format(dateFormat);
    
    const noteStyle = {
-      background: color,
-      padding: 18,
+      backgroundColor: color,
+      padding: 16,
       width: '100%',
       height: '100%',
-      borderRadius: 12,
+      borderRadius: 14,
    };
 
    return (
       <View style={noteStyle}>
-         <Text style={{ fontSize: 22, fontWeight: '400' }}>{title}</Text>
+         <Text style={{ fontSize: 18, fontWeight: '400' }}>{title}</Text>
          <Text style={{ fontSize: 18, opacity: 0.5,position: 'absolute', bottom: 18, right: 18, fontWeight: '300' }}>{formattedDate}</Text>
       </View>
    );

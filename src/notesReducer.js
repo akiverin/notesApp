@@ -10,7 +10,7 @@ export default function tasksReducer(notes, action) {
             title: action.title,
             text: action.text,
             color: action.color,
-            date: moment(),
+            date: action.date?action.date:moment(),
           },
         ];
       }

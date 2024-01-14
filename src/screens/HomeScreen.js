@@ -85,12 +85,12 @@ const styles = StyleSheet.create({
    },
    square: {
       width: '50%',
-      height: 200,
+      height: 180,
       padding: 4,
    },
    squareBig: {
       width: '100%',
-      height: 200,
+      height: 180,
       padding: 4,
    },
    sortButtonContainer: {

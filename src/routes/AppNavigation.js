@@ -5,8 +5,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createStackNavigator } from '@react-navigation/stack';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import NoteScreen from '../screens/NoteScreen'; 
 import HomeScreen from '../screens/HomeScreen';
@@ -14,6 +14,7 @@ import NewNoteScreen from '../screens/NewNoteScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import EditNoteScreen from '../screens/EditNoteScreen';
 import AboutScreen from '../screens/AboutScreen';
+import AccountScreen from '../screens/AccountScreen';
 
 const Tab = createBottomTabNavigator();
 const NativeStack = createNativeStackNavigator();
@@ -29,6 +30,25 @@ const startNotes = [
 ]
 
 export const NotesContext = React.createContext();
+
+const storeData = async (value) => {
+  try {
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem('@notes', jsonValue);
+  } catch (e) {
+    console.error('Error saving data:', e);
+  }
+};
+
+const getData = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('@notes');
+    return jsonValue != null ? JSON.parse(jsonValue) : [];
+  } catch (e) {
+    console.error('Error reading data:', e);
+    return [];
+  }
+};
 
 function MainStackNavigator(){
   return (
@@ -79,12 +99,34 @@ function MainTabNavigator() {
 }
 
 const AppNavigation = () => {
-  const [notes, dispatch] = useReducer(notesReducer, startNotes);
+  const loadNotes = async () => {
+    try {
+      const storedNotes = await getData();
+      storedNotes.forEach((item) => 
+      dispatch({
+        type: 'added',
+        id: item.id,
+        title: item.title,
+        text: item.text,
+        color: item.color,
+        date: item.date,
+      })
+      );
+    } catch (error) {
+      console.error('Error loading notes:', error);
+    }
+  }
+
+  useEffect(() => {
+    loadNotes();
+  }, []);
+
+  const [notes, dispatch] = useReducer(notesReducer, []);
 
   const addNote = (newNote) => {
     dispatch({
       type: 'added',
-      id: Number(notes[notes.length-1].id) + 1,
+      id: notes.length>0?Number(notes[notes.length-1].id) + 1:0,
       title: newNote.title,
       text: newNote.text,
       color: newNote.color,
@@ -105,14 +147,29 @@ const AppNavigation = () => {
     });
   }
 
+  useEffect(() => {
+    console.log(notes)
+    storeData(notes);
+  }, [notes]);
+
   return (
     <NotesContext.Provider value={{ notes, addNote, deleteNote, changeNote }}>
       <NavigationContainer>
         <Drawer.Navigator>
           <Drawer.Screen 
             name="HomeDrawer" 
-            options={{title: 'Мои заметки'}}
-            component={MainTabNavigator} 
+            options={({ navigation }) => ({
+              title: 'Мои заметки',
+              headerRight: () => (
+                <Ionicons onPress={() => navigation.navigate("Account")} name="person-circle-outline" size={28} color="#000" style={{ marginRight: 20 }} />
+              )
+            })}
+            component={MainTabNavigator}
+          />
+          <Drawer.Screen 
+            name="Account"
+            options={{title: 'Мой профиль'}}
+            component={AccountScreen}
           />
           <Drawer.Screen 
             name="AboutDrawer"
