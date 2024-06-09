@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Note from "../components/Note";
-import { NotesContext } from "../routes/AppNavigation";
+import { NotesContext } from "../routes/NotesContext";
 import moment from "moment";
 import IconButton from "../components/UI/IconButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";

@@ -6,7 +6,6 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import NoteScreen from "../screens/NoteScreen";
 import HomeScreen from "../screens/HomeScreen";
@@ -16,69 +15,12 @@ import EditNoteScreen from "../screens/EditNoteScreen";
 import AboutScreen from "../screens/AboutScreen";
 import AccountScreen from "../screens/AccountScreen";
 
+import { NotesProvider } from "./NotesContext.js";
+
 const Tab = createBottomTabNavigator();
 const NativeStack = createNativeStackNavigator();
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-
-const startNotes = [
-  {
-    id: "1",
-    title: "Покупка авиабилетов",
-    date: "2023-10-11T20:27:16+03:00",
-    color: "#d5b9fe",
-    text: "Планирование поездки и поиск оптимальных билетов",
-  },
-  {
-    id: "2",
-    title: "Презентация проекта",
-    date: "2022-12-11T20:27:16+03:00",
-    color: "#edcaaa",
-    text: "Подготовка материалов и сценария презентации",
-  },
-  {
-    id: "3",
-    title: "Тренировка и здоровое питание",
-    date: "2023-12-10T20:27:16+03:00",
-    color: "#cadffd",
-    text: "План тренировок и рацион питания на неделю",
-  },
-  {
-    id: "4",
-    title: "Подготовка к собеседованию",
-    date: "2021-11-11T20:27:16+03:00",
-    color: "#ffafad",
-    text: "Изучение информации о компании и подготовка ответов на вопросы",
-  },
-  {
-    id: "5",
-    title: "Обновление профессиональных навыков",
-    date: "2023-12-11T20:27:16+03:00",
-    color: "#62ad9e",
-    text: "Выбор новых курсов и план обучения на год",
-  },
-];
-
-export const NotesContext = React.createContext();
-
-const storeData = async (value) => {
-  try {
-    const jsonValue = JSON.stringify(value);
-    await AsyncStorage.setItem("@notes", jsonValue);
-  } catch (e) {
-    console.error("Error saving data:", e);
-  }
-};
-
-const getData = async () => {
-  try {
-    const jsonValue = await AsyncStorage.getItem("@notes");
-    return jsonValue != null ? JSON.parse(jsonValue) : [];
-  } catch (e) {
-    console.error("Error reading data:", e);
-    return [];
-  }
-};
 
 function MainStackNavigator() {
   return (
@@ -168,61 +110,8 @@ function MainTabNavigator() {
 }
 
 const AppNavigation = () => {
-  const loadNotes = async () => {
-    try {
-      const storedNotes = await getData();
-      storedNotes.forEach((item) =>
-        dispatch({
-          type: "added",
-          id: item.id,
-          title: item.title,
-          text: item.text,
-          color: item.color,
-          date: item.date,
-        })
-      );
-    } catch (error) {
-      console.error("Error loading notes:", error);
-    }
-  };
-
-  useEffect(() => {
-    loadNotes();
-  }, []);
-
-  const [notes, dispatch] = useReducer(notesReducer, []);
-
-  const addNote = (newNote) => {
-    dispatch({
-      type: "added",
-      id: notes.length > 0 ? Number(notes[notes.length - 1].id) + 1 : 0,
-      title: newNote.title,
-      text: newNote.text,
-      color: newNote.color,
-    });
-  };
-
-  const changeNote = (note) => {
-    dispatch({
-      type: "changed",
-      note: note,
-    });
-  };
-
-  const deleteNote = (noteId) => {
-    dispatch({
-      type: "deleted",
-      id: noteId,
-    });
-  };
-
-  useEffect(() => {
-    console.log(notes);
-    storeData(notes);
-  }, [notes]);
-
   return (
-    <NotesContext.Provider value={{ notes, addNote, deleteNote, changeNote }}>
+    <NotesProvider>
       <NavigationContainer>
         <Drawer.Navigator>
           <Drawer.Screen
@@ -253,7 +142,7 @@ const AppNavigation = () => {
           />
         </Drawer.Navigator>
       </NavigationContainer>
-    </NotesContext.Provider>
+    </NotesProvider>
   );
 };
 

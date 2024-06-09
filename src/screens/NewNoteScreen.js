@@ -6,7 +6,7 @@ import React, {
   useEffect,
 } from "react";
 import { View, TextInput, Platform, StyleSheet } from "react-native";
-import { NotesContext } from "../routes/AppNavigation";
+import { NotesContext } from "../routes/NotesContext";
 import ColorPicker from "../components/ColorPicker";
 import IconButton from "../components/UI/IconButton";
 

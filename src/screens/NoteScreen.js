@@ -12,7 +12,7 @@ import {
   Platform,
   Dimensions,
 } from "react-native";
-import { NotesContext } from "../routes/AppNavigation";
+import { NotesContext } from "../routes/NotesContext";
 import moment from "moment";
 import IconButton from "../components/UI/IconButton";
 
