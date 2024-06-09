@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import { NotesContext } from "../routes/NotesContext";
 import moment from "moment";
+import "moment/locale/ru";
 import IconButton from "../components/UI/IconButton";
 
 export function formatDate(obj) {
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   date: {
-    marginVertical: 20,
+    marginBottom: 100,
     opacity: 0.5,
     paddingHorizontal: 10,
     textAlign: "right",
