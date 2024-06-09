@@ -16,20 +16,14 @@ const SettingsScreen = ({ navigation }) => {
 
   useImperativeHandle(themeDetector, () => ({
     getTheme() {
-      if (Platform.OS === "web") {
-        return Appearance.getColorScheme();
-      } else {
-        if (Platform.OS === "android") {
-          return Appearance.getColorScheme() ||
-            (Platform.OS === "android" && Platform.OS === "dark")
-            ? "dark"
-            : "light";
-        } else if (Platform.OS === "ios") {
-          return Appearance.getColorScheme();
-        } else {
-          return Appearance.getColorScheme() || "light";
-        }
+      const colorScheme = Appearance.getColorScheme();
+      if (Platform.OS === "web" || Platform.OS === "ios") {
+        return colorScheme;
       }
+      if (Platform.OS === "android") {
+        return colorScheme === "dark" ? "dark" : "light";
+      }
+      return colorScheme || "light";
     },
   }));
 
