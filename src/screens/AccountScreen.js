@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
-import IconButton from '../components/UI/IconButton';
+import React, { useState } from "react";
+import { View, TextInput, Button, StyleSheet } from "react-native";
+import IconButton from "../components/UI/IconButton";
 
 const AccountScreen = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    console.log('Вход')
+    console.log("Вход");
   };
 
   return (
@@ -25,7 +25,15 @@ const AccountScreen = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <IconButton style={{backgroundColor: '#00B8E8', color: '#FFF', marginTop: 10,}} title="Войти" onPress={handleLogin} />
+      <IconButton
+        style={{
+          backgroundColor: "rgb(10,132,255)",
+          color: "#FFF",
+          marginTop: 10,
+        }}
+        title="Войти"
+        onPress={handleLogin}
+      />
     </View>
   );
 };
@@ -33,17 +41,17 @@ const AccountScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     padding: 16,
   },
   input: {
     height: 46,
-    borderColor: '#EBEBEB',
+    borderColor: "#EBEBEB",
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 12,
     paddingLeft: 12,
-    backgroundColor: '#FAFAFA',
+    backgroundColor: "#FAFAFA",
   },
 });
 
