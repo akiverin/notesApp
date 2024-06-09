@@ -1,4 +1,10 @@
-import React, { useRef, useImperativeHandle, useState, useEffect } from "react";
+import React, {
+  useRef,
+  useImperativeHandle,
+  useState,
+  useEffect,
+  useContext,
+} from "react";
 import {
   View,
   Text,
@@ -10,9 +16,11 @@ import {
 import IconButton from "../components/UI/IconButton";
 import logo from "../../assets/logo.png";
 import logoW from "../../assets/logo-w.png";
+import { SettingsContext } from "../routes/SettingsContext";
 
 const SettingsScreen = ({ navigation }) => {
   const themeDetector = useRef();
+  const { settings, changeSettings } = useContext(SettingsContext);
 
   useImperativeHandle(themeDetector, () => ({
     getTheme() {
@@ -46,9 +54,6 @@ const SettingsScreen = ({ navigation }) => {
         backgroundColor: currentTheme === "dark" ? "#111" : "#eee",
       }}
     >
-      <Text style={{ color: currentTheme === "dark" ? "#fff" : "#000" }}>
-        Это экран настроек
-      </Text>
       <Text
         style={{
           marginBottom: 10,
@@ -56,6 +61,14 @@ const SettingsScreen = ({ navigation }) => {
         }}
       >
         Выбрана тема: {currentTheme}
+      </Text>
+      <Text
+        style={{
+          marginBottom: 10,
+          color: currentTheme === "dark" ? "#fff" : "#000",
+        }}
+      >
+        Цитата {settings.quote && "не "}была скрыта
       </Text>
       {currentTheme == "dark" ? (
         <Image
@@ -75,10 +88,23 @@ const SettingsScreen = ({ navigation }) => {
         />
       )}
       <IconButton
-        title="Сменить тему"
-        onPress={() =>
-          setCurrentTheme(currentTheme == "dark" ? "light" : "dark")
+        title={
+          "Включить " +
+          (settings.theme == "dark" ? "светлую тему" : "темную тему")
         }
+        onPress={() => {
+          setCurrentTheme(currentTheme == "dark" ? "light" : "dark");
+          changeSettings("theme", currentTheme == "dark" ? "light" : "dark");
+        }}
+        style={{
+          backgroundColor: currentTheme == "dark" ? "#eee" : "#333",
+          color: currentTheme == "dark" ? "#000" : "#fff",
+          marginBottom: 10,
+        }}
+      />
+      <IconButton
+        title={(settings.quote ? "Скрыть" : "Показать") + " цитату"}
+        onPress={() => changeSettings("quote", !settings.quote)}
         style={{
           backgroundColor: currentTheme == "dark" ? "#eee" : "#333",
           color: currentTheme == "dark" ? "#000" : "#fff",

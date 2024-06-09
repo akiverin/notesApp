@@ -16,6 +16,7 @@ import AboutScreen from "../screens/AboutScreen";
 import AccountScreen from "../screens/AccountScreen";
 
 import { NotesProvider } from "./NotesContext.js";
+import { SettingsProvider } from "./SettingsContext.js";
 
 const Tab = createBottomTabNavigator();
 const NativeStack = createNativeStackNavigator();
@@ -67,21 +68,18 @@ function MainTabNavigator() {
           return <Ionicons name={iconName} size={24} color={color} />;
         },
         tabBarIconStyle: {
-          // position: "absolute",
           zIndex: 10,
-          // marginTop: 4,
         },
         labelStyle: {
           margin: 0,
-          // marginTop: 2,
         },
         tabBarShowLabel: false,
         tabBarStyle: {
           position: "absolute",
           justifyContent: "center",
           bottom: 26,
-          right: 30,
-          left: 30,
+          right: 60,
+          left: 60,
           borderRadius: 30,
           height: 60,
           padding: 0,
@@ -111,38 +109,40 @@ function MainTabNavigator() {
 
 const AppNavigation = () => {
   return (
-    <NotesProvider>
-      <NavigationContainer>
-        <Drawer.Navigator>
-          <Drawer.Screen
-            name="HomeDrawer"
-            options={({ navigation }) => ({
-              title: "Мои заметки",
-              headerRight: () => (
-                <Ionicons
-                  onPress={() => navigation.navigate("Account")}
-                  name="person-circle-outline"
-                  size={28}
-                  color="rgb(10,132,255)"
-                  style={{ marginRight: 20 }}
-                />
-              ),
-            })}
-            component={MainTabNavigator}
-          />
-          <Drawer.Screen
-            name="Account"
-            options={{ title: "Мой профиль" }}
-            component={AccountScreen}
-          />
-          <Drawer.Screen
-            name="AboutDrawer"
-            options={{ title: "О приложении" }}
-            component={AllStackNavigator}
-          />
-        </Drawer.Navigator>
-      </NavigationContainer>
-    </NotesProvider>
+    <SettingsProvider>
+      <NotesProvider>
+        <NavigationContainer>
+          <Drawer.Navigator>
+            <Drawer.Screen
+              name="HomeDrawer"
+              options={({ navigation }) => ({
+                title: "Мои заметки",
+                headerRight: () => (
+                  <Ionicons
+                    onPress={() => navigation.navigate("Account")}
+                    name="person-circle-outline"
+                    size={28}
+                    color="rgb(10,132,255)"
+                    style={{ marginRight: 20 }}
+                  />
+                ),
+              })}
+              component={MainTabNavigator}
+            />
+            <Drawer.Screen
+              name="Account"
+              options={{ title: "Мой профиль" }}
+              component={AccountScreen}
+            />
+            <Drawer.Screen
+              name="AboutDrawer"
+              options={{ title: "О приложении" }}
+              component={AllStackNavigator}
+            />
+          </Drawer.Navigator>
+        </NavigationContainer>
+      </NotesProvider>
+    </SettingsProvider>
   );
 };
 

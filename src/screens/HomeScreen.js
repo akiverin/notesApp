@@ -9,12 +9,14 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import Note from "../components/Note";
 import { NotesContext } from "../routes/NotesContext";
+import { SettingsContext } from "../routes/SettingsContext";
 import moment from "moment";
 import IconButton from "../components/UI/IconButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Home = () => {
   const { notes, deleteNote } = useContext(NotesContext);
+  const { settings } = useContext(SettingsContext);
   const navigation = useNavigation();
   const [sortType, setSortType] = useState("asc");
   const [selectedNotes, setSelectedNotes] = useState([]);
@@ -72,6 +74,7 @@ const Home = () => {
           setQuote(storedQuote);
           setQuoteDate(storedQuoteDate);
           setQuoteAuthor(storedQuoteAuthor);
+          console.log("Current settings:", settings);
         } else {
           const response = await fetch(
             "https://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=ru",
@@ -98,7 +101,7 @@ const Home = () => {
       }
     };
     fetchQuote();
-  }, []);
+  }, [settings]);
 
   return (
     <ScrollView>
@@ -114,13 +117,13 @@ const Home = () => {
           />
         )}
       </View>
-      {quote && (
+      {settings.quote && quote && (
         <View style={styles.quoteView}>
-          <View style={{ flex: 4 }}>
+          <View>
             <Text style={styles.quoteTitle}>Цитата дня</Text>
             <Text style={styles.quoteAuthor}>{quoteAuthor}</Text>
           </View>
-          <View style={{ flex: 10 }}>
+          <View style={{ flex: 1 }}>
             <Text style={styles.quoteText}>{quote}</Text>
           </View>
         </View>
@@ -153,7 +156,9 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    padding: 12,
+    paddingHorizontal: 12,
+    paddingBottom: 100,
+    paddingTop: 8,
     justifyContent: "space-between",
   },
   square: {
