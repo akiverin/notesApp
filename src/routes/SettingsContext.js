@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const SettingsContext = React.createContext();
 
-const defaultSettings = { theme: "light", quote: true };
+const defaultSettings = { theme: "light", quote: true, borderNotes: false };
 
 const storeSettings = async (value) => {
   try {
@@ -51,12 +51,19 @@ export const SettingsProvider = ({ children }) => {
     });
   };
 
+  const resetSettings = () => {
+    storeSettings(defaultSettings);
+    loadSettings();
+  };
+
   useEffect(() => {
     storeSettings(settings);
   }, [settings]);
 
   return (
-    <SettingsContext.Provider value={{ settings, changeSettings }}>
+    <SettingsContext.Provider
+      value={{ settings, changeSettings, resetSettings }}
+    >
       {children}
     </SettingsContext.Provider>
   );

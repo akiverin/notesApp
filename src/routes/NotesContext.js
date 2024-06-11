@@ -73,12 +73,20 @@ export const NotesProvider = ({ children }) => {
     });
   };
 
+  const clearNotes = () => {
+    dispatch({
+      type: "clear",
+    });
+  };
+
   useEffect(() => {
     storeData(notes);
   }, [notes]);
 
   return (
-    <NotesContext.Provider value={{ notes, addNote, deleteNote, changeNote }}>
+    <NotesContext.Provider
+      value={{ notes, addNote, deleteNote, changeNote, clearNotes }}
+    >
       {children}
     </NotesContext.Provider>
   );

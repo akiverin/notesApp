@@ -12,15 +12,20 @@ import {
   Appearance,
   Image,
   Dimensions,
+  StyleSheet,
 } from "react-native";
 import IconButton from "../components/UI/IconButton";
 import logo from "../../assets/logo.png";
 import logoW from "../../assets/logo-w.png";
 import { SettingsContext } from "../routes/SettingsContext";
+import { NotesContext } from "../routes/NotesContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SettingsScreen = ({ navigation }) => {
   const themeDetector = useRef();
-  const { settings, changeSettings } = useContext(SettingsContext);
+  const { settings, changeSettings, resetSettings } =
+    useContext(SettingsContext);
+  const { clearNotes } = useContext(NotesContext);
 
   useImperativeHandle(themeDetector, () => ({
     getTheme() {
@@ -44,6 +49,19 @@ const SettingsScreen = ({ navigation }) => {
   useEffect(() => {
     setCurrentTheme(themeDetector.current.getTheme());
   }, []);
+
+  const deleteAllNotes = () => {
+    // AsyncStorage.removeItem("@notes");
+    clearNotes();
+  };
+
+  const styles = StyleSheet.create({
+    btn: {
+      backgroundColor: currentTheme == "dark" ? "#eee" : "#333",
+      color: currentTheme == "dark" ? "#000" : "#fff",
+      marginBottom: 10,
+    },
+  });
 
   return (
     <View
@@ -96,18 +114,31 @@ const SettingsScreen = ({ navigation }) => {
           setCurrentTheme(currentTheme == "dark" ? "light" : "dark");
           changeSettings("theme", currentTheme == "dark" ? "light" : "dark");
         }}
-        style={{
-          backgroundColor: currentTheme == "dark" ? "#eee" : "#333",
-          color: currentTheme == "dark" ? "#000" : "#fff",
-          marginBottom: 10,
-        }}
+        style={styles.btn}
       />
       <IconButton
         title={(settings.quote ? "Скрыть" : "Показать") + " цитату"}
         onPress={() => changeSettings("quote", !settings.quote)}
+        style={styles.btn}
+      />
+      <IconButton
+        title={
+          (settings.borderNotes ? "Убрать" : "Добавить") + " обводку заметок"
+        }
+        onPress={() => changeSettings("borderNotes", !settings.borderNotes)}
+        style={styles.btn}
+      />
+      <IconButton
+        title={"Сбросить настройки"}
+        onPress={() => resetSettings()}
+        style={styles.btn}
+      />
+      <IconButton
+        title={"Удалить все заметки"}
+        onPress={() => deleteAllNotes()}
         style={{
-          backgroundColor: currentTheme == "dark" ? "#eee" : "#333",
-          color: currentTheme == "dark" ? "#000" : "#fff",
+          backgroundColor: currentTheme == "dark" ? "#FF3B3B" : "#FF3B3B",
+          color: "#fff",
           marginBottom: 10,
         }}
       />
