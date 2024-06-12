@@ -104,9 +104,16 @@ const Home = () => {
   }, [settings]);
 
   return (
-    <ScrollView>
+    <ScrollView style={settings.theme == "dark" && { backgroundColor: "#111" }}>
       <View style={styles.sortButtonContainer}>
-        <Text style={styles.textTitle}>Мои заметки</Text>
+        <Text
+          style={[
+            styles.textTitle,
+            settings.theme == "dark" && { color: "#fff" },
+          ]}
+        >
+          Мои заметки
+        </Text>
         {selectedNotes.length !== 0 ? (
           <IconButton icon="trash" onPress={handleDeleteNotes} />
         ) : (
@@ -120,7 +127,7 @@ const Home = () => {
       {settings.quote && quote && (
         <View style={styles.quoteView}>
           <View>
-            <Text style={styles.quoteTitle}>Цитата дня</Text>
+            <Text>Цитата дня</Text>
             <Text style={styles.quoteAuthor}>{quoteAuthor}</Text>
           </View>
           <View style={{ flex: 1 }}>
