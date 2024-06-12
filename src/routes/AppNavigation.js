@@ -1,5 +1,4 @@
-import React, { useReducer, useEffect } from "react";
-import notesReducer from "../notesReducer";
+import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -16,7 +15,7 @@ import AboutScreen from "../screens/AboutScreen";
 import AccountScreen from "../screens/AccountScreen";
 
 import { NotesProvider } from "./NotesContext.js";
-import { SettingsProvider } from "./SettingsContext.js";
+import { SettingsContext, SettingsProvider } from "./SettingsContext.js";
 
 const Tab = createBottomTabNavigator();
 const NativeStack = createNativeStackNavigator();
@@ -52,6 +51,7 @@ function AllStackNavigator() {
 }
 
 function MainTabNavigator() {
+  const { settings } = useContext(SettingsContext);
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -65,10 +65,11 @@ function MainTabNavigator() {
           } else if (route.name === "Settings") {
             iconName = focused ? "settings" : "settings-outline";
           }
-          return <Ionicons name={iconName} size={24} color={color} />;
+          return <Ionicons name={iconName} size={26} color={color} />;
         },
         tabBarIconStyle: {
           zIndex: 10,
+          backgroundColor: "#eee",
         },
         labelStyle: {
           margin: 0,
@@ -78,13 +79,15 @@ function MainTabNavigator() {
           position: "absolute",
           justifyContent: "center",
           bottom: 26,
-          right: 60,
-          left: 60,
+          right: 70,
+          left: 70,
           borderRadius: 30,
           height: 60,
           padding: 0,
           paddingBottom: 0,
           paddingVertical: 1,
+          backgroundColor: settings.theme !== "dark" ? "white" : "#191919",
+          borderTopWidth: 0,
         },
       })}
     >
@@ -107,43 +110,68 @@ function MainTabNavigator() {
   );
 }
 
-const AppNavigation = () => {
+function DrawerNavigator() {
+  const { settings } = useContext(SettingsContext);
+  return (
+    <Drawer.Navigator
+      screenOptions={
+        (options = {
+          drawerContentStyle: {
+            backgroundColor: settings.theme !== "dark" ? "white" : "#111",
+          },
+          drawerInactiveTintColor: settings.theme !== "dark" ? "#111" : "#eee",
+
+          headerStyle: {
+            backgroundColor: settings.theme !== "dark" ? "white" : "#191919",
+            borderColor: "#fff",
+            shadowColor: settings.theme !== "dark" ? "#aaa" : "#555",
+          },
+          headerTitleStyle: {
+            color: settings.theme !== "dark" ? "black" : "white",
+          },
+        })
+      }
+    >
+      <Drawer.Screen
+        name="HomeDrawer"
+        options={({ navigation }) => ({
+          title: "Мои заметки",
+          headerRight: () => (
+            <Ionicons
+              onPress={() => navigation.navigate("Account")}
+              name="person-circle-outline"
+              size={28}
+              color="rgb(10,132,255)"
+              style={{ marginRight: 20 }}
+            />
+          ),
+        })}
+        component={MainTabNavigator}
+      />
+      <Drawer.Screen
+        name="Account"
+        options={{ title: "Мой профиль" }}
+        component={AccountScreen}
+      />
+      <Drawer.Screen
+        name="AboutDrawer"
+        options={{ title: "О приложении" }}
+        component={AllStackNavigator}
+      />
+    </Drawer.Navigator>
+  );
+}
+
+function AppNavigation() {
   return (
     <SettingsProvider>
       <NotesProvider>
         <NavigationContainer>
-          <Drawer.Navigator>
-            <Drawer.Screen
-              name="HomeDrawer"
-              options={({ navigation }) => ({
-                title: "Мои заметки",
-                headerRight: () => (
-                  <Ionicons
-                    onPress={() => navigation.navigate("Account")}
-                    name="person-circle-outline"
-                    size={28}
-                    color="rgb(10,132,255)"
-                    style={{ marginRight: 20 }}
-                  />
-                ),
-              })}
-              component={MainTabNavigator}
-            />
-            <Drawer.Screen
-              name="Account"
-              options={{ title: "Мой профиль" }}
-              component={AccountScreen}
-            />
-            <Drawer.Screen
-              name="AboutDrawer"
-              options={{ title: "О приложении" }}
-              component={AllStackNavigator}
-            />
-          </Drawer.Navigator>
+          <DrawerNavigator />
         </NavigationContainer>
       </NotesProvider>
     </SettingsProvider>
   );
-};
+}
 
 export default AppNavigation;

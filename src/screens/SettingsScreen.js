@@ -20,6 +20,7 @@ import logoW from "../../assets/logo-w.png";
 import { SettingsContext } from "../routes/SettingsContext";
 import { NotesContext } from "../routes/NotesContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Setting from "../components/Setting";
 
 const SettingsScreen = ({ navigation }) => {
   const themeDetector = useRef();
@@ -40,9 +41,9 @@ const SettingsScreen = ({ navigation }) => {
     },
   }));
 
-  useEffect(() => {
-    setCurrentTheme(themeDetector.current.getTheme());
-  }, [themeDetector.current]);
+  // useEffect(() => {
+  //   setCurrentTheme(themeDetector.current.getTheme());
+  // }, [themeDetector.current]);
 
   const [currentTheme, setCurrentTheme] = useState(null);
 
@@ -51,9 +52,35 @@ const SettingsScreen = ({ navigation }) => {
   }, []);
 
   const deleteAllNotes = () => {
-    // AsyncStorage.removeItem("@notes");
     clearNotes();
   };
+
+  const settingsList = [
+    {
+      display: "theme",
+      name: "Цветовая тема",
+      content: [
+        { title: "Светлая", value: "light" },
+        { title: "Темная", value: "dark" },
+      ],
+    },
+    {
+      display: "quote",
+      name: "Цитата дня",
+      content: [
+        { title: "Включена", value: true },
+        { title: "Отключена", value: false },
+      ],
+    },
+    {
+      display: "borderNotes",
+      name: "Обводка заметок",
+      content: [
+        { title: "Включена", value: true },
+        { title: "Отключена", value: false },
+      ],
+    },
+  ];
 
   const styles = StyleSheet.create({
     btn: {
@@ -61,34 +88,54 @@ const SettingsScreen = ({ navigation }) => {
       color: currentTheme == "dark" ? "#000" : "#fff",
       marginBottom: 10,
     },
+    container: {
+      display: "flex",
+      flexDirection: "row",
+      flexWrap: "wrap",
+      paddingHorizontal: 12,
+      paddingBottom: 100,
+      paddingTop: 8,
+      justifyContent: "space-between",
+    },
+    textTitle: {
+      marginVertical: 18,
+      width: "100%",
+      fontSize: 22,
+      fontWeight: "400",
+    },
   });
 
   return (
     <View
       style={{
         flex: 1,
-        justifyContent: "center",
         alignItems: "center",
-        backgroundColor: currentTheme === "dark" ? "#111" : "#eee",
+        backgroundColor: settings.theme === "dark" ? "#111" : "#eee",
+        paddingBottom: 100,
+        paddingHorizontal: 12,
       }}
     >
       <Text
-        style={{
-          marginBottom: 10,
-          color: currentTheme === "dark" ? "#fff" : "#000",
-        }}
+        style={[
+          styles.textTitle,
+          settings.theme == "dark" && { color: "#fff" },
+        ]}
       >
-        Выбрана тема: {currentTheme}
+        Настройки
       </Text>
-      <Text
-        style={{
-          marginBottom: 10,
-          color: currentTheme === "dark" ? "#fff" : "#000",
-        }}
-      >
-        Цитата {settings.quote && "не "}была скрыта
-      </Text>
-      {currentTheme == "dark" ? (
+      {settingsList.map((item, index) => {
+        return (
+          <Setting
+            name={item.name}
+            content={item.content}
+            active={settings[item.display]}
+            key={index}
+            theme={settings.theme}
+            onSelect={(value) => changeSettings(item.display, value)}
+          />
+        );
+      })}
+      {settings.theme == "dark" ? (
         <Image
           source={logoW}
           style={{
@@ -106,29 +153,6 @@ const SettingsScreen = ({ navigation }) => {
         />
       )}
       <IconButton
-        title={
-          "Включить " +
-          (settings.theme == "dark" ? "светлую тему" : "темную тему")
-        }
-        onPress={() => {
-          setCurrentTheme(currentTheme == "dark" ? "light" : "dark");
-          changeSettings("theme", currentTheme == "dark" ? "light" : "dark");
-        }}
-        style={styles.btn}
-      />
-      <IconButton
-        title={(settings.quote ? "Скрыть" : "Показать") + " цитату"}
-        onPress={() => changeSettings("quote", !settings.quote)}
-        style={styles.btn}
-      />
-      <IconButton
-        title={
-          (settings.borderNotes ? "Убрать" : "Добавить") + " обводку заметок"
-        }
-        onPress={() => changeSettings("borderNotes", !settings.borderNotes)}
-        style={styles.btn}
-      />
-      <IconButton
         title={"Сбросить настройки"}
         onPress={() => resetSettings()}
         style={styles.btn}
@@ -137,17 +161,11 @@ const SettingsScreen = ({ navigation }) => {
         title={"Удалить все заметки"}
         onPress={() => deleteAllNotes()}
         style={{
-          backgroundColor: currentTheme == "dark" ? "#FF3B3B" : "#FF3B3B",
+          backgroundColor: settings.theme == "dark" ? "#FF3B3B" : "#FF3B3B",
           color: "#fff",
           marginBottom: 10,
         }}
       />
-
-      {/* <IconButton
-        icon="chevron-back-outline"
-        title="Вернуться назад"
-        onPress={() => navigation.goBack()}
-      /> */}
     </View>
   );
 };

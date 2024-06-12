@@ -9,6 +9,7 @@ import { View, TextInput, Platform, StyleSheet } from "react-native";
 import { NotesContext } from "../routes/NotesContext";
 import ColorPicker from "../components/ColorPicker";
 import IconButton from "../components/UI/IconButton";
+import { SettingsContext } from "../routes/SettingsContext";
 
 const NewNote = ({ navigation }) => {
   const [colorPickerVisible, setColorPickerVisible] = useState(false);
@@ -16,6 +17,7 @@ const NewNote = ({ navigation }) => {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [inputHeight, setInputHeight] = useState(43);
+  const { settings } = useContext(SettingsContext);
 
   const inputRef = useRef(null);
 
@@ -51,8 +53,94 @@ const NewNote = ({ navigation }) => {
     navigation.goBack();
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 20,
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 20,
+    },
+    headerText: {
+      fontSize: 16,
+      fontWeight: "bold",
+    },
+    backButton: {
+      backgroundColor: "rgb(255,255,255)",
+      padding: 10,
+      borderRadius: 8,
+      height: 46,
+      width: 46,
+      justifyContent: "center",
+    },
+    saveButton: {
+      backgroundColor: "rgb(255,255,255)",
+      padding: 14,
+      borderRadius: 8,
+      height: 46,
+      justifyContent: "center",
+    },
+    titleInput: {
+      height: 40,
+      paddingHorizontal: 10,
+      borderWidth: 0,
+      fontSize: 30,
+      backgroundColor: "transparent",
+      color: settings.theme !== "dark" ? "black" : "white",
+      fontWeight: "400",
+      marginBottom: 20,
+      ...Platform.select({
+        web: {
+          outlineWidth: 0,
+        },
+        default: {
+          borderWidth: 0,
+        },
+      }),
+    },
+    textInput: {
+      flex: 1,
+      borderColor: "gray",
+      borderWidth: 1,
+      paddingHorizontal: 10,
+      textAlignVertical: "top",
+      color: settings.theme !== "dark" ? "black" : "white",
+      borderWidth: 0,
+      fontSize: 20,
+      ...Platform.select({
+        web: {
+          outlineWidth: 0,
+        },
+        default: {
+          borderWidth: 0,
+        },
+      }),
+    },
+    placeholder: {
+      color:
+        settings.theme !== "dark"
+          ? "rgba(0, 0, 0, 0.5)"
+          : "rgba(255, 255, 255, 0.5)",
+    },
+    colorButton: {
+      backgroundColor: "#007bff",
+      padding: 10,
+      borderRadius: 8,
+      alignItems: "center",
+      marginBottom: 20,
+    },
+  });
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        settings.theme == "dark" && { backgroundColor: "#111" },
+      ]}
+    >
       <View style={styles.header}>
         <IconButton
           icon="chevron-back-outline"
@@ -63,7 +151,12 @@ const NewNote = ({ navigation }) => {
             title="Цвет"
             style={{
               backgroundColor:
-                selectedColor !== null ? selectedColor.color : "#fff",
+                selectedColor !== null
+                  ? selectedColor.color
+                  : settings.theme !== "dark"
+                  ? "#fff"
+                  : "#1e1e1e",
+              color: settings.theme !== "dark" ? "#555" : "#bbb",
             }}
             onPress={() => setColorPickerVisible(true)}
           />
@@ -108,81 +201,5 @@ const NewNote = ({ navigation }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  headerText: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  backButton: {
-    backgroundColor: "rgb(255,255,255)",
-    padding: 10,
-    borderRadius: 8,
-    height: 46,
-    width: 46,
-    justifyContent: "center",
-  },
-  saveButton: {
-    backgroundColor: "rgb(255,255,255)",
-    padding: 14,
-    borderRadius: 8,
-    height: 46,
-    justifyContent: "center",
-  },
-  titleInput: {
-    height: 40,
-    paddingHorizontal: 10,
-    borderWidth: 0,
-    fontSize: 30,
-    backgroundColor: "transparent",
-    fontWeight: "400",
-    marginBottom: 20,
-    ...Platform.select({
-      web: {
-        outlineWidth: 0,
-      },
-      default: {
-        borderWidth: 0,
-      },
-    }),
-  },
-  textInput: {
-    flex: 1,
-    borderColor: "gray",
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    textAlignVertical: "top",
-    borderWidth: 0,
-    fontSize: 20,
-    ...Platform.select({
-      web: {
-        outlineWidth: 0,
-      },
-      default: {
-        borderWidth: 0,
-      },
-    }),
-  },
-  placeholder: {
-    color: "rgba(0, 0, 0, 0.5)",
-  },
-  colorButton: {
-    backgroundColor: "#007bff",
-    padding: 10,
-    borderRadius: 8,
-    alignItems: "center",
-    marginBottom: 20,
-  },
-});
 
 export default NewNote;
