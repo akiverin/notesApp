@@ -14,26 +14,35 @@ const Note = ({ title, date, color }) => {
   const formattedDate = moment(date).locale("ru").format(dateFormat);
 
   const noteStyle = {
-    backgroundColor: color,
+    backgroundColor: settings.theme !== "dark" ? color : darkenColor(color, 70),
     padding: 16,
     width: "100%",
     height: "100%",
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: settings.borderNotes ? darkenColor(color, 5) : color,
+    borderColor: settings.borderNotes ? darkenColor(color, 10) : "#00000000",
   };
 
   return (
     <View style={noteStyle}>
-      <Text style={{ fontSize: 18, fontWeight: "400" }}>{title}</Text>
       <Text
         style={{
           fontSize: 18,
-          opacity: 0.5,
+          fontWeight: "400",
+          color: settings.theme !== "dark" ? "#111" : "#eee",
+        }}
+      >
+        {title}
+      </Text>
+      <Text
+        style={{
+          fontSize: 18,
+          opacity: 0.7,
           position: "absolute",
           bottom: 18,
           right: 18,
           fontWeight: "300",
+          color: settings.theme !== "dark" ? "#222" : color,
         }}
       >
         {formattedDate}

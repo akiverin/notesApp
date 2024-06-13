@@ -13,6 +13,7 @@ import { SettingsContext } from "../routes/SettingsContext";
 import moment from "moment";
 import IconButton from "../components/UI/IconButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { darkenColor } from "../utils/darkenColor";
 
 const Home = () => {
   const { notes, deleteNote } = useContext(NotesContext);
@@ -125,13 +126,36 @@ const Home = () => {
         )}
       </View>
       {settings.quote && quote && (
-        <View style={styles.quoteView}>
+        <View
+          style={{
+            ...styles.quoteView,
+            backgroundColor: settings.theme !== "dark" ? "#FFE3C2" : "#402D00",
+          }}
+        >
           <View>
-            <Text>Цитата дня</Text>
-            <Text style={styles.quoteAuthor}>{quoteAuthor}</Text>
+            <Text
+              style={{ color: settings.theme !== "dark" ? "#000" : "#fff" }}
+            >
+              Цитата дня
+            </Text>
+            <Text
+              style={{
+                ...styles.quoteAuthor,
+                color: settings.theme !== "dark" ? "#000" : "#fff",
+              }}
+            >
+              {quoteAuthor}
+            </Text>
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.quoteText}>{quote}</Text>
+            <Text
+              style={{
+                ...styles.quoteText,
+                color: settings.theme !== "dark" ? "#000" : "#fff",
+              }}
+            >
+              {quote}
+            </Text>
           </View>
         </View>
       )}
@@ -212,7 +236,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     gap: 20,
-    backgroundColor: "#FFE3C2",
     borderRadius: 12,
     marginTop: 8,
     paddingVertical: 10,
@@ -232,7 +255,7 @@ const styles = StyleSheet.create({
   quoteAuthor: {
     fontSize: 12.2,
     fontWeight: "300",
-    color: "#3D2100",
+    opacity: 0.8,
     marginTop: 3,
   },
 });

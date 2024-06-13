@@ -13,6 +13,7 @@ import {
   Dimensions,
 } from "react-native";
 import { NotesContext } from "../routes/NotesContext";
+import { SettingsContext } from "../routes/SettingsContext";
 import moment from "moment";
 import "moment/locale/ru";
 import IconButton from "../components/UI/IconButton";
@@ -25,6 +26,7 @@ export function formatDate(obj) {
 
 const NoteScreen = ({ navigation, route }) => {
   const { deleteNote } = useContext(NotesContext);
+  const { settings } = useContext(SettingsContext);
   const { id, title, text, date, color } = route.params;
 
   const handleEdit = () => {
@@ -64,7 +66,13 @@ const NoteScreen = ({ navigation, route }) => {
   }, [windowDimensions]);
 
   return (
-    <View style={{ flex: 1, padding: 16 }}>
+    <View
+      style={{
+        flex: 1,
+        padding: 12,
+        backgroundColor: settings.theme !== "dark" ? "#fff" : "#111",
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
@@ -91,6 +99,7 @@ const NoteScreen = ({ navigation, route }) => {
         style={{
           ...styles.title,
           fontSize: windowDimensions.width < 260 ? 24 : 32,
+          color: settings.theme !== "dark" ? "black" : "white",
         }}
       >
         {title}
@@ -100,12 +109,20 @@ const NoteScreen = ({ navigation, route }) => {
           style={{
             ...styles.text,
             fontSize: windowDimensions.width < 260 ? 14 : 18,
+            color: settings.theme !== "dark" ? "black" : "white",
           }}
         >
           {text}
         </Text>
       </ScrollView>
-      <Text style={styles.date}>{formatDate(date)}</Text>
+      <Text
+        style={{
+          ...styles.date,
+          color: settings.theme !== "dark" ? "black" : "white",
+        }}
+      >
+        {formatDate(date)}
+      </Text>
     </View>
   );
 };
@@ -151,7 +168,7 @@ const styles = StyleSheet.create({
   date: {
     marginBottom: 100,
     opacity: 0.5,
-    paddingHorizontal: 10,
+    paddingHorizontal: 12,
     textAlign: "right",
   },
 });

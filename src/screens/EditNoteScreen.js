@@ -9,7 +9,9 @@ import {
 } from "react-native";
 import { NotesContext } from "../routes/NotesContext";
 import IconButton from "../components/UI/IconButton";
+import { SettingsContext } from "../routes/SettingsContext";
 const EditNoteScreen = ({ navigation, route }) => {
+  const { settings } = useContext(SettingsContext);
   const note = route.params;
   const [title, setTitle] = useState(note.title);
   const [text, setText] = useState(note.text);
@@ -26,7 +28,13 @@ const EditNoteScreen = ({ navigation, route }) => {
   };
 
   return (
-    <View style={{ flex: 1, padding: 16 }}>
+    <View
+      style={{
+        flex: 1,
+        padding: 16,
+        backgroundColor: settings.theme !== "dark" ? "#eee" : "#111",
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
@@ -46,15 +54,35 @@ const EditNoteScreen = ({ navigation, route }) => {
           }}
         />
       </View>
-      <Text style={styles.date}>{note.date}</Text>
+      <Text
+        style={{
+          ...styles.date,
+          color: settings.theme !== "dark" ? "black" : "white",
+        }}
+      >
+        {note.date}
+      </Text>
       <TextInput
-        style={[styles.titleInput, { height: inputHeight }]}
+        style={[
+          styles.titleInput,
+          {
+            height: inputHeight,
+            color: settings.theme !== "dark" ? "black" : "white",
+          },
+        ]}
         multiline={true}
         numberOfLines={4}
         onContentSizeChange={(e) => {
-          setInputHeight(e.nativeEvent.contentSize.height);
+          setInputHeight(e.nativeEvent.contentSize.height + 2);
         }}
-        placeholderTextColor={styles.placeholder.color}
+        placeholderTextColor={
+          {
+            color:
+              settings.theme !== "dark"
+                ? "rgba(0, 0, 0, 0.5)"
+                : "rgba(255, 255, 255, 0.5)",
+          }.color
+        }
         placeholder="Заголовок заметки"
         value={title}
         onChangeText={(newTitle) => {
@@ -64,8 +92,18 @@ const EditNoteScreen = ({ navigation, route }) => {
         }}
       />
       <TextInput
-        style={styles.textInput}
-        placeholderTextColor={styles.placeholder.color}
+        style={{
+          ...styles.textInput,
+          color: settings.theme !== "dark" ? "black" : "white",
+        }}
+        placeholderTextColor={
+          {
+            color:
+              settings.theme !== "dark"
+                ? "rgba(0, 0, 0, 0.5)"
+                : "rgba(255, 255, 255, 0.5)",
+          }.color
+        }
         placeholder="Текст заметки"
         multiline={true}
         value={text}
@@ -132,9 +170,6 @@ const styles = StyleSheet.create({
         borderWidth: 0,
       },
     }),
-  },
-  placeholder: {
-    color: "rgba(0, 0, 0, 0.5)",
   },
   colorButton: {
     backgroundColor: "#007bff",

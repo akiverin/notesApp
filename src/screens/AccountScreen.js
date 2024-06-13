@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, TextInput, Button, StyleSheet } from "react-native";
 import IconButton from "../components/UI/IconButton";
+import { SettingsContext } from "../routes/SettingsContext";
 
 const AccountScreen = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { settings } = useContext(SettingsContext);
 
   const handleLogin = () => {
     console.log("Вход");
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        ...styles.container,
+        backgroundColor: settings.theme !== "dark" ? "#fff" : "#111",
+      }}
+    >
       <TextInput
         style={styles.input}
         placeholder="Логин"

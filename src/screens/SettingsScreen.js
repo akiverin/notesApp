@@ -141,6 +141,7 @@ const SettingsScreen = ({ navigation }) => {
           style={{
             width: Dimensions.get("window").width - 80,
             resizeMode: "contain",
+            opacity: 0,
           }}
         />
       ) : (
@@ -149,6 +150,7 @@ const SettingsScreen = ({ navigation }) => {
           style={{
             width: Dimensions.get("window").width - 80,
             resizeMode: "contain",
+            opacity: 0,
           }}
         />
       )}

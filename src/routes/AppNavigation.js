@@ -1,7 +1,10 @@
 import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  DrawerToggleButton,
+  createDrawerNavigator,
+} from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
@@ -114,28 +117,34 @@ function DrawerNavigator() {
   const { settings } = useContext(SettingsContext);
   return (
     <Drawer.Navigator
-      screenOptions={
-        (options = {
-          drawerContentStyle: {
-            backgroundColor: settings.theme !== "dark" ? "white" : "#111",
-          },
-          drawerInactiveTintColor: settings.theme !== "dark" ? "#111" : "#eee",
-
-          headerStyle: {
-            backgroundColor: settings.theme !== "dark" ? "white" : "#191919",
-            borderColor: "#fff",
-            shadowColor: settings.theme !== "dark" ? "#aaa" : "#555",
-          },
-          headerTitleStyle: {
-            color: settings.theme !== "dark" ? "black" : "white",
-          },
-        })
-      }
+      screenOptions={({ navigation }) => ({
+        drawerContentStyle: {
+          backgroundColor: settings.theme !== "dark" ? "white" : "#111",
+        },
+        drawerInactiveTintColor: settings.theme !== "dark" ? "#111" : "#eee",
+        headerStyle: {
+          backgroundColor: settings.theme !== "dark" ? "white" : "#191919",
+          borderColor: "#fff",
+          shadowColor: settings.theme !== "dark" ? "#aaa" : "#555",
+        },
+        headerTitleStyle: {
+          color: settings.theme !== "dark" ? "black" : "white",
+        },
+        headerLeft: () => (
+          <Ionicons
+            onPress={() => navigation.toggleDrawer()}
+            name="menu"
+            size={28}
+            color="rgb(10,132,255)"
+            style={{ marginLeft: 20 }}
+          />
+        ),
+      })}
     >
       <Drawer.Screen
         name="HomeDrawer"
         options={({ navigation }) => ({
-          title: "Мои заметки",
+          title: "Заметочная",
           headerRight: () => (
             <Ionicons
               onPress={() => navigation.navigate("Account")}
