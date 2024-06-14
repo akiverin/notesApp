@@ -14,6 +14,7 @@ import moment from "moment";
 import IconButton from "../components/UI/IconButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { darkenColor } from "../utils/darkenColor";
+import DropdownList from "../components/UI/DropdownList";
 
 const Home = () => {
   const { notes, deleteNote } = useContext(NotesContext);
@@ -42,6 +43,14 @@ const Home = () => {
         return a.date > b.date ? 1 : -1;
       } else if (sortType === "desc") {
         return a.date < b.date ? 1 : -1;
+      } else if (sortType === "important") {
+        if (a.mark === b.mark) {
+          return 0;
+        } else if (a.mark && !b.mark) {
+          return -1;
+        } else {
+          return 1;
+        }
       } else {
         return 0;
       }
@@ -55,13 +64,15 @@ const Home = () => {
     return formattedNotes.sort(sortFunction);
   }, [notes, sortType]);
 
-  const handleSortToggle = () => {
-    setSortType((prevSortType) => (prevSortType === "asc" ? "desc" : "asc"));
-  };
-
-  const handleDeleteNotes = () => {
-    selectedNotes.forEach((noteId) => deleteNote(noteId));
-    setSelectedNotes([]);
+  const handleSortToggle = (value) => {
+    console.log(value);
+    if (value === "От новых к старым") {
+      setSortType("desc");
+    } else if (value === "От старых к новым") {
+      setSortType("asc");
+    } else if (value === "Сначала важное") {
+      setSortType("important");
+    }
   };
 
   useEffect(() => {
@@ -116,15 +127,16 @@ const Home = () => {
         >
           Мои заметки
         </Text>
-        {selectedNotes.length !== 0 ? (
-          <IconButton icon="trash" onPress={handleDeleteNotes} />
-        ) : (
-          <IconButton
-            icon={sortType === "asc" ? "arrow-up" : "arrow-down"}
-            title={sortType === "asc" ? "Сначала старые" : "Сначала новые"}
-            onPress={() => handleSortToggle()}
-          />
-        )}
+        {/* <IconButton
+          icon={sortType === "asc" ? "arrow-up" : "arrow-down"}
+          title={sortType === "asc" ? "Сначала старые" : "Сначала новые"}
+          onPress={() => handleSortToggle()}
+        /> */}
+        <DropdownList
+          title="Сортировка"
+          content={["От новых к старым", "От старых к новым", "Сначала важное"]}
+          onSelect={handleSortToggle}
+        />
       </View>
       {settings.quote && quote && (
         <View
@@ -209,6 +221,7 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   sortButtonContainer: {
+    zIndex: 10,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
