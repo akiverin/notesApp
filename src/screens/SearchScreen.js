@@ -50,6 +50,7 @@ const SearchScreen = () => {
       text: note.text,
       color: note.color,
       date: moment(note.date).format(),
+      mark: note.mark,
     });
   };
 
@@ -92,7 +93,12 @@ const SearchScreen = () => {
             style={(index + 1) % 5 == 3 ? styles.square : styles.square}
             onPress={() => pressNote(item)}
           >
-            <Note title={item.title} date={item.date} color={item.color} />
+            <Note
+              title={item.title}
+              date={item.date}
+              color={item.color}
+              mark={item.mark}
+            />
           </TouchableOpacity>
         ))}
       </ScrollView>

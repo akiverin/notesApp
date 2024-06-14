@@ -36,6 +36,7 @@ export const NotesProvider = ({ children }) => {
           text: item.text,
           color: item.color,
           date: item.date,
+          mark: item.mark,
         })
       );
     } catch (error) {
@@ -56,6 +57,7 @@ export const NotesProvider = ({ children }) => {
       title: newNote.title,
       text: newNote.text,
       color: newNote.color,
+      mark: newNote.mark,
     });
   };
 

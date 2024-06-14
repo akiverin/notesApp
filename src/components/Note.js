@@ -4,8 +4,9 @@ import { SettingsContext } from "../routes/SettingsContext";
 import moment from "moment";
 import "moment/locale/ru";
 import { darkenColor } from "../utils/darkenColor";
+import { Ionicons } from "@expo/vector-icons";
 
-const Note = ({ title, date, color }) => {
+const Note = ({ title, date, color, mark }) => {
   const { settings } = useContext(SettingsContext);
 
   const currentYear = moment().locale("ru").format("YYYY");
@@ -19,7 +20,7 @@ const Note = ({ title, date, color }) => {
     width: "100%",
     height: "100%",
     borderRadius: 14,
-    borderWidth: 1,
+    borderWidth: mark ? 2 : 1,
     borderColor: settings.borderNotes ? darkenColor(color, 10) : "#00000000",
   };
 
@@ -34,19 +35,35 @@ const Note = ({ title, date, color }) => {
       >
         {title}
       </Text>
-      <Text
+      <View
         style={{
-          fontSize: 18,
-          opacity: 0.7,
           position: "absolute",
+          flexDirection: "row",
           bottom: 18,
           right: 18,
-          fontWeight: "300",
-          color: settings.theme !== "dark" ? "#222" : color,
+          alignItems: "center",
+          gap: 10,
         }}
       >
-        {formattedDate}
-      </Text>
+        {mark && (
+          <Ionicons
+            name="star"
+            size={10}
+            color={settings.theme !== "dark" ? "#222" : color}
+          />
+        )}
+        <Text
+          style={{
+            fontSize: 18,
+            opacity: 0.7,
+
+            fontWeight: "300",
+            color: settings.theme !== "dark" ? "#222" : color,
+          }}
+        >
+          {formattedDate}
+        </Text>
+      </View>
     </View>
   );
 };

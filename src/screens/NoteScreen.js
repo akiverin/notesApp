@@ -17,6 +17,7 @@ import { SettingsContext } from "../routes/SettingsContext";
 import moment from "moment";
 import "moment/locale/ru";
 import IconButton from "../components/UI/IconButton";
+import { Ionicons } from "@expo/vector-icons";
 
 export function formatDate(obj) {
   const newDate = moment(obj).locale("ru").format("D MMM YYYY");
@@ -27,7 +28,7 @@ export function formatDate(obj) {
 const NoteScreen = ({ navigation, route }) => {
   const { deleteNote } = useContext(NotesContext);
   const { settings } = useContext(SettingsContext);
-  const { id, title, text, date, color } = route.params;
+  const { id, title, text, date, color, mark } = route.params;
 
   const handleEdit = () => {
     navigation.navigate("EditStack", {
@@ -36,6 +37,7 @@ const NoteScreen = ({ navigation, route }) => {
       text: text,
       color: color,
       date: moment(date).locale("ru").format("D MMM YYYY"),
+      mark: mark,
     });
   };
 
@@ -67,13 +69,13 @@ const NoteScreen = ({ navigation, route }) => {
 
   return (
     <View
-      style={{
-        flex: 1,
-        padding: 12,
-        backgroundColor: settings.theme == "dark" && {
-          backgroundColor: "#111",
+      style={[
+        {
+          flex: 1,
+          padding: 12,
         },
-      }}
+        settings.theme == "dark" && { backgroundColor: "#111" },
+      ]}
     >
       <View
         style={{
@@ -117,14 +119,33 @@ const NoteScreen = ({ navigation, route }) => {
           {text}
         </Text>
       </ScrollView>
-      <Text
+      <View
         style={{
-          ...styles.date,
-          color: settings.theme !== "dark" ? "black" : "white",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          gap: 10,
+          marginBottom: 100,
+          opacity: 0.5,
+          paddingHorizontal: 12,
         }}
       >
-        {formatDate(date)}
-      </Text>
+        {mark && (
+          <Ionicons
+            name="star"
+            size={10}
+            color={settings.theme !== "dark" ? "#222" : "white"}
+          />
+        )}
+        <Text
+          style={{
+            ...styles.date,
+            color: settings.theme !== "dark" ? "black" : "white",
+          }}
+        >
+          {formatDate(date)}
+        </Text>
+      </View>
     </View>
   );
 };
@@ -168,9 +189,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   date: {
-    marginBottom: 100,
     opacity: 0.5,
-    paddingHorizontal: 12,
     textAlign: "right",
   },
 });

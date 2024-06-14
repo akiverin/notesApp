@@ -15,6 +15,7 @@ const EditNoteScreen = ({ navigation, route }) => {
   const note = route.params;
   const [title, setTitle] = useState(note.title);
   const [text, setText] = useState(note.text);
+  const [mark, setMark] = useState(note.mark);
   const [inputHeight, setInputHeight] = useState(40);
   const { changeNote } = useContext(NotesContext);
 
@@ -23,6 +24,7 @@ const EditNoteScreen = ({ navigation, route }) => {
       id: note.id,
       title: title,
       text: text,
+      mark: mark,
     };
     changeNote(editedNote);
   };
@@ -46,13 +48,19 @@ const EditNoteScreen = ({ navigation, route }) => {
           icon="chevron-back-outline"
           onPress={() => navigation.goBack()}
         />
-        <IconButton
-          icon="save"
-          onPress={() => {
-            handleEdit();
-            navigation.navigate("HomeStack");
-          }}
-        />
+        <View style={{ flexDirection: "row", gap: 10 }}>
+          <IconButton
+            icon={mark ? "star" : "star-outline"}
+            onPress={() => setMark(!mark)}
+          />
+          <IconButton
+            icon="save"
+            onPress={() => {
+              handleEdit();
+              navigation.navigate("HomeStack");
+            }}
+          />
+        </View>
       </View>
       <Text
         style={{

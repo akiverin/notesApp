@@ -32,6 +32,7 @@ const Home = () => {
       text: note.text,
       color: note.color,
       date: moment(note.date).format(),
+      mark: note.mark,
     });
   };
 
@@ -174,7 +175,12 @@ const Home = () => {
             }
             onPress={() => pressNote(item)}
           >
-            <Note title={item.title} date={item.date} color={item.color} />
+            <Note
+              title={item.title}
+              date={item.date}
+              color={item.color}
+              mark={item.mark}
+            />
           </TouchableOpacity>
         ))}
       </ScrollView>

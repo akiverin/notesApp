@@ -16,6 +16,7 @@ const NewNote = ({ navigation }) => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
+  const [mark, setMark] = useState(false);
   const [inputHeight, setInputHeight] = useState(43);
   const { settings } = useContext(SettingsContext);
 
@@ -44,12 +45,14 @@ const NewNote = ({ navigation }) => {
       text: text,
       date: new Date(),
       color: selectedColor == null ? "#e0e0e0" : selectedColor.color,
+      mark: mark,
     };
     addNote(newNote);
     setTitle("");
     setText("");
     setInputHeight(43);
     setSelectedColor(null);
+    setMark(false);
     navigation.goBack();
   };
 
@@ -147,6 +150,10 @@ const NewNote = ({ navigation }) => {
           onPress={() => navigation.goBack()}
         />
         <View style={{ display: "flex", flexDirection: "row", gap: 4 }}>
+          <IconButton
+            icon={mark ? "star" : "star-outline"}
+            onPress={() => setMark(!mark)}
+          />
           <IconButton
             title="Цвет"
             style={{

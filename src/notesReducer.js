@@ -11,6 +11,7 @@ export default function tasksReducer(notes, action) {
           text: action.text,
           color: action.color,
           date: action.date ? action.date : moment(),
+          mark: action.mark,
         },
       ];
     }
@@ -23,6 +24,7 @@ export default function tasksReducer(notes, action) {
             text: action.note.text,
             date: n.date,
             color: n.color,
+            mark: action.note.mark,
           };
         } else {
           return n;
