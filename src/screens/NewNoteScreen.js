@@ -155,8 +155,13 @@ const NewNote = ({ navigation }) => {
                   ? selectedColor.color
                   : settings.theme !== "dark"
                   ? "#fff"
-                  : "#1e1e1e",
-              color: settings.theme !== "dark" ? "#555" : "#bbb",
+                  : "#222",
+              color:
+                settings.theme !== "dark"
+                  ? "#333"
+                  : selectedColor !== null
+                  ? "#333"
+                  : "#eee",
             }}
             onPress={() => setColorPickerVisible(true)}
           />

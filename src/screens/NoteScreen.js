@@ -70,7 +70,9 @@ const NoteScreen = ({ navigation, route }) => {
       style={{
         flex: 1,
         padding: 12,
-        backgroundColor: settings.theme !== "dark" ? "#fff" : "#111",
+        backgroundColor: settings.theme == "dark" && {
+          backgroundColor: "#111",
+        },
       }}
     >
       <View

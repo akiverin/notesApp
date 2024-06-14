@@ -15,7 +15,7 @@ import NewNoteScreen from "../screens/NewNoteScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import EditNoteScreen from "../screens/EditNoteScreen";
 import AboutScreen from "../screens/AboutScreen";
-import AccountScreen from "../screens/AccountScreen";
+import SearchScreen from "../screens/SearchScreen.js";
 
 import { NotesProvider } from "./NotesContext.js";
 import { SettingsContext, SettingsProvider } from "./SettingsContext.js";
@@ -89,7 +89,7 @@ function MainTabNavigator() {
           padding: 0,
           paddingBottom: 0,
           paddingVertical: 1,
-          backgroundColor: settings.theme !== "dark" ? "white" : "#191919",
+          backgroundColor: settings.theme !== "dark" ? "white" : "#202020",
           borderTopWidth: 0,
         },
       })}
@@ -119,11 +119,11 @@ function DrawerNavigator() {
     <Drawer.Navigator
       screenOptions={({ navigation }) => ({
         drawerContentStyle: {
-          backgroundColor: settings.theme !== "dark" ? "white" : "#111",
+          backgroundColor: settings.theme !== "dark" ? "white" : "#202020",
         },
         drawerInactiveTintColor: settings.theme !== "dark" ? "#111" : "#eee",
         headerStyle: {
-          backgroundColor: settings.theme !== "dark" ? "white" : "#191919",
+          backgroundColor: settings.theme !== "dark" ? "white" : "#202020",
           borderColor: "#fff",
           shadowColor: settings.theme !== "dark" ? "#aaa" : "#555",
         },
@@ -134,7 +134,7 @@ function DrawerNavigator() {
           <Ionicons
             onPress={() => navigation.toggleDrawer()}
             name="menu"
-            size={28}
+            size={26}
             color="rgb(10,132,255)"
             style={{ marginLeft: 20 }}
           />
@@ -147,9 +147,9 @@ function DrawerNavigator() {
           title: "Заметочная",
           headerRight: () => (
             <Ionicons
-              onPress={() => navigation.navigate("Account")}
-              name="person-circle-outline"
-              size={28}
+              onPress={() => navigation.navigate("Search")}
+              name="search"
+              size={24}
               color="rgb(10,132,255)"
               style={{ marginRight: 20 }}
             />
@@ -158,9 +158,9 @@ function DrawerNavigator() {
         component={MainTabNavigator}
       />
       <Drawer.Screen
-        name="Account"
-        options={{ title: "Мой профиль" }}
-        component={AccountScreen}
+        name="Search"
+        options={{ title: "Поиск заметок" }}
+        component={SearchScreen}
       />
       <Drawer.Screen
         name="AboutDrawer"

@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, StyleSheet, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SettingsContext } from "../../routes/SettingsContext";
 
-const IconButton = ({ icon, title, onPress, style, mini }) => {
+const IconButton = ({ icon, title, onPress, style, mini, iconColor }) => {
   const { settings } = useContext(SettingsContext);
   const styles = StyleSheet.create({
     theButton: {
@@ -40,10 +40,10 @@ const IconButton = ({ icon, title, onPress, style, mini }) => {
   let buttonColor = style
     ? style.color
       ? style.color
-      : "#555555"
+      : "#444"
     : settings.theme !== "dark"
-    ? "#555"
-    : "#bbb";
+    ? "#333"
+    : "#eee";
   return (
     <TouchableOpacity
       style={[
@@ -54,7 +54,7 @@ const IconButton = ({ icon, title, onPress, style, mini }) => {
         style
           ? null
           : {
-              backgroundColor: settings.theme !== "dark" ? "#fff" : "#1e1e1e",
+              backgroundColor: settings.theme !== "dark" ? "#fff" : "#222",
             },
       ]}
       onPress={onPress}
@@ -64,7 +64,9 @@ const IconButton = ({ icon, title, onPress, style, mini }) => {
         <Ionicons
           name={icon}
           size={18}
-          color={settings.theme !== "dark" ? "#555" : "#bbb"}
+          color={
+            iconColor ? iconColor : settings.theme !== "dark" ? "#333" : "#eee"
+          }
           style={{ alignSelf: "center" }}
         />
       )}
