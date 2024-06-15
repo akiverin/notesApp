@@ -81,7 +81,7 @@ const SearchScreen = () => {
             backgroundColor: "rgb(10,132,255)",
             color: "#FFF",
           }}
-          icon="search"
+          icon="magnify"
           iconColor="white"
           onPress={() => handleSearch(search)}
         />

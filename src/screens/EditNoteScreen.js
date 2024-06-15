@@ -44,17 +44,14 @@ const EditNoteScreen = ({ navigation, route }) => {
           alignItems: "center",
         }}
       >
-        <IconButton
-          icon="chevron-back-outline"
-          onPress={() => navigation.goBack()}
-        />
+        <IconButton icon="chevron-left" onPress={() => navigation.goBack()} />
         <View style={{ flexDirection: "row", gap: 10 }}>
           <IconButton
             icon={mark ? "star" : "star-outline"}
             onPress={() => setMark(!mark)}
           />
           <IconButton
-            icon="save"
+            icon="content-save"
             onPress={() => {
               handleEdit();
               navigation.navigate("HomeStack");

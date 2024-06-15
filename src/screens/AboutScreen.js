@@ -1,7 +1,9 @@
 import React, { useContext } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Image, Dimensions } from "react-native";
 import IconButton from "../components/UI/IconButton";
 import { SettingsContext } from "../routes/SettingsContext";
+import logo from "../../assets/logo.png";
+import logoW from "../../assets/logo-w.png";
 const AboutScreen = ({ navigation }) => {
   const { settings } = useContext(SettingsContext);
   return (
@@ -34,8 +36,27 @@ const AboutScreen = ({ navigation }) => {
         Проект "Заметки: Приложение для создания и управления заметками
         пользователя" выполнен Кивериным Андреем.{" "}
       </Text>
+      {settings.theme == "dark" ? (
+        <Image
+          source={logoW}
+          style={{
+            width: Dimensions.get("window").width - 80,
+            resizeMode: "contain",
+            opacity: 1,
+          }}
+        />
+      ) : (
+        <Image
+          source={logo}
+          style={{
+            width: Dimensions.get("window").width - 80,
+            resizeMode: "contain",
+            opacity: 1,
+          }}
+        />
+      )}
       <IconButton
-        icon="chevron-back-outline"
+        icon="chevron-left"
         title="Вернуться назад"
         onPress={() => navigation.goBack()}
       />

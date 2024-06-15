@@ -7,7 +7,7 @@ import {
 } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import NoteScreen from "../screens/NoteScreen";
 import HomeScreen from "../screens/HomeScreen";
@@ -62,13 +62,15 @@ function MainTabNavigator() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           if (route.name === "Home") {
-            iconName = focused ? "home" : "home-outline";
+            iconName = focused ? "home-variant" : "home-variant-outline";
           } else if (route.name === "NewNote") {
-            iconName = focused ? "add-circle" : "add-circle-outline";
+            iconName = focused ? "note-plus" : "note-plus-outline";
           } else if (route.name === "Settings") {
-            iconName = focused ? "settings" : "settings-outline";
+            iconName = focused ? "cog" : "cog-outline";
           }
-          return <Ionicons name={iconName} size={26} color={color} />;
+          return (
+            <MaterialCommunityIcons name={iconName} size={26} color={color} />
+          );
         },
         tabBarIconStyle: {
           zIndex: 10,
@@ -91,6 +93,8 @@ function MainTabNavigator() {
           paddingVertical: 1,
           backgroundColor: settings.theme !== "dark" ? "white" : "#202020",
           borderTopWidth: 0,
+          boxShadow: "none",
+          elevation: 0,
         },
       })}
     >
@@ -131,7 +135,7 @@ function DrawerNavigator() {
           color: settings.theme !== "dark" ? "black" : "white",
         },
         headerLeft: () => (
-          <Ionicons
+          <MaterialCommunityIcons
             onPress={() => navigation.toggleDrawer()}
             name="menu"
             size={26}
@@ -146,10 +150,10 @@ function DrawerNavigator() {
         options={({ navigation }) => ({
           title: "Заметочная",
           headerRight: () => (
-            <Ionicons
+            <MaterialCommunityIcons
               onPress={() => navigation.navigate("Search")}
-              name="search"
-              size={24}
+              name="magnify"
+              size={26}
               color="rgb(10,132,255)"
               style={{ marginRight: 20 }}
             />

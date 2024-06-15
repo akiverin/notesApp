@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Text, TouchableOpacity, StyleSheet, Platform } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SettingsContext } from "../../routes/SettingsContext";
 
 const IconButton = ({ icon, title, onPress, style, mini, iconColor }) => {
@@ -61,9 +61,9 @@ const IconButton = ({ icon, title, onPress, style, mini, iconColor }) => {
       activeOpacity="0.6"
     >
       {icon && (
-        <Ionicons
+        <MaterialCommunityIcons
           name={icon}
-          size={18}
+          size={20}
           color={
             iconColor ? iconColor : settings.theme !== "dark" ? "#333" : "#eee"
           }

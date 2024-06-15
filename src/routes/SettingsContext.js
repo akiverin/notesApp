@@ -3,7 +3,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const SettingsContext = React.createContext();
 
-const defaultSettings = { theme: "light", quote: true, borderNotes: false };
+const defaultSettings = {
+  theme: "light",
+  quote: true,
+  borderNotes: false,
+  widthBorder: 1,
+  widthMarkBorder: 2,
+};
 
 const storeSettings = async (value) => {
   try {

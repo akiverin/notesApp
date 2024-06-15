@@ -84,14 +84,11 @@ const NoteScreen = ({ navigation, route }) => {
           alignItems: "center",
         }}
       >
-        <IconButton
-          icon="chevron-back-outline"
-          onPress={() => navigation.goBack()}
-        />
+        <IconButton icon="chevron-left" onPress={() => navigation.goBack()} />
         <View style={{ flexDirection: "row", gap: 10 }}>
-          <IconButton icon="create" onPress={handleEdit} />
+          <IconButton icon="note-edit" onPress={handleEdit} />
           <IconButton
-            icon="trash"
+            icon="delete"
             onPress={() => {
               handleDelete(id);
               navigation.goBack();

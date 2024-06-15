@@ -20,7 +20,7 @@ const Note = ({ title, date, color, mark }) => {
     width: "100%",
     height: "100%",
     borderRadius: 14,
-    borderWidth: mark ? 2 : 1,
+    borderWidth: mark ? settings.widthMarkBorder : settings.widthBorder,
     borderColor: settings.borderNotes ? darkenColor(color, 10) : "#00000000",
   };
 
@@ -39,7 +39,7 @@ const Note = ({ title, date, color, mark }) => {
         style={{
           position: "absolute",
           flexDirection: "row",
-          bottom: 18,
+          bottom: 16,
           right: 18,
           alignItems: "center",
           gap: 10,
@@ -54,10 +54,9 @@ const Note = ({ title, date, color, mark }) => {
         )}
         <Text
           style={{
-            fontSize: 18,
+            fontSize: 16,
             opacity: 0.7,
-
-            fontWeight: "300",
+            fontWeight: "400",
             color: settings.theme !== "dark" ? "#222" : color,
           }}
         >

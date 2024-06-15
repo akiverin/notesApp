@@ -145,10 +145,7 @@ const NewNote = ({ navigation }) => {
       ]}
     >
       <View style={styles.header}>
-        <IconButton
-          icon="chevron-back-outline"
-          onPress={() => navigation.goBack()}
-        />
+        <IconButton icon="chevron-left" onPress={() => navigation.goBack()} />
         <View style={{ display: "flex", flexDirection: "row", gap: 4 }}>
           <IconButton
             icon={mark ? "star" : "star-outline"}
