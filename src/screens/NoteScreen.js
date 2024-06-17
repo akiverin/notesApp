@@ -71,7 +71,7 @@ const NoteScreen = ({ navigation, route }) => {
     <View
       style={[
         {
-          flex: 1,
+          height: "100%",
           padding: 12,
         },
         settings.theme == "dark" && { backgroundColor: "#111" },
@@ -148,10 +148,6 @@ const NoteScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",

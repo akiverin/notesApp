@@ -116,7 +116,7 @@ const SettingsScreen = ({ navigation }) => {
   return (
     <View
       style={{
-        flex: 1,
+        height: "100%",
         alignItems: "center",
         backgroundColor: settings.theme === "dark" ? "#111" : "#eee",
         paddingHorizontal: 12,

@@ -58,7 +58,7 @@ const NewNote = ({ navigation }) => {
 
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
+      height: "100%",
       padding: 20,
     },
     header: {
@@ -105,7 +105,6 @@ const NewNote = ({ navigation }) => {
       }),
     },
     textInput: {
-      flex: 1,
       borderColor: "gray",
       borderWidth: 1,
       paddingHorizontal: 10,
@@ -152,7 +151,7 @@ const NewNote = ({ navigation }) => {
             onPress={() => setMark(!mark)}
           />
           <IconButton
-            title="Цвет"
+            icon="palette"
             style={{
               backgroundColor:
                 selectedColor !== null
@@ -160,17 +159,18 @@ const NewNote = ({ navigation }) => {
                   : settings.theme !== "dark"
                   ? "#fff"
                   : "#222",
-              color:
-                settings.theme !== "dark"
-                  ? "#333"
-                  : selectedColor !== null
-                  ? "#333"
-                  : "#eee",
             }}
+            iconColor={
+              settings.theme !== "dark"
+                ? "#333"
+                : selectedColor !== null
+                ? "#333"
+                : "#eee"
+            }
             onPress={() => setColorPickerVisible(true)}
           />
           <IconButton
-            title="Сохранить"
+            icon="content-save"
             onPress={saveNote}
             style={{ backgroundColor: "rgb(36,138,61)", color: "#FFF" }}
           />

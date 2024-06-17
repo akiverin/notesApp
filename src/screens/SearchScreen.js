@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingLeft: 12,
     backgroundColor: "#FAFAFA",
-    flex: 1,
+    flexGrow: 1,
   },
   searchBox: {
     flexDirection: "row",

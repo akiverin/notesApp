@@ -32,7 +32,7 @@ const EditNoteScreen = ({ navigation, route }) => {
   return (
     <View
       style={{
-        flex: 1,
+        height: "100%",
         padding: 16,
         backgroundColor: settings.theme !== "dark" ? "#eee" : "#111",
       }}
@@ -119,10 +119,6 @@ const EditNoteScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -159,7 +155,6 @@ const styles = StyleSheet.create({
     }),
   },
   textInput: {
-    flex: 1,
     borderColor: "gray",
     borderWidth: 1,
     paddingHorizontal: 10,

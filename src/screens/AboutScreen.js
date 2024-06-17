@@ -9,7 +9,7 @@ const AboutScreen = ({ navigation }) => {
   return (
     <View
       style={{
-        flex: 1,
+        height: "100%",
         justifyContent: "center",
         alignItems: "center",
         gap: 20,

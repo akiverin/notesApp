@@ -145,7 +145,7 @@ const Home = () => {
             backgroundColor: settings.theme !== "dark" ? "#FFE3C2" : "#402D00",
           }}
         >
-          <View>
+          <View style={styles.quoteContent}>
             <Text
               style={{ color: settings.theme !== "dark" ? "#000" : "#fff" }}
             >
@@ -160,7 +160,7 @@ const Home = () => {
               {quoteAuthor}
             </Text>
           </View>
-          <View style={{ flex: 1 }}>
+          <View style={styles.quoteTextView}>
             <Text
               style={{
                 ...styles.quoteText,
@@ -263,11 +263,16 @@ const styles = StyleSheet.create({
     borderColor: "#d7bf48",
     borderWidth: 1,
   },
+  quoteTextView: {
+    flexShrink: 1,
+    flexGrow: 1,
+  },
   quoteTitle: {
     fontSize: 18,
     color: "#3D2100",
   },
   quoteText: {
+    display: "flex",
     fontSize: 10.8,
     color: "#3D2100",
   },

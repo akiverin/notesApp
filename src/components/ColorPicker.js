@@ -1,5 +1,6 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
+import React from "react";
+import { View, Text, TouchableOpacity, Modal, StyleSheet } from "react-native";
+import IconButton from "./UI/IconButton";
 
 const colors = [
   { name: "Perfume", color: "#d5b9fe" },
@@ -10,7 +11,7 @@ const colors = [
   { name: "Onahau", color: "#c6f2f9" },
   { name: "Solomie", color: "#ffdd85" },
   { name: "Keppel", color: "#62ad9e" },
-  { name: "Tangerine", color: "#ff9377" }
+  { name: "Tangerine", color: "#ff9377" },
 ];
 
 const ColorPicker = ({ visible, onClose, onColorSelect }) => {
@@ -33,6 +34,9 @@ const ColorPicker = ({ visible, onClose, onColorSelect }) => {
             </TouchableOpacity>
           ))}
         </View>
+        <View style={styles.closeBox}>
+          <IconButton title="Закрыть" icon="close" onPress={onClose} />
+        </View>
       </View>
     </Modal>
   );
@@ -40,29 +44,37 @@ const ColorPicker = ({ visible, onClose, onColorSelect }) => {
 
 const styles = StyleSheet.create({
   modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   colorGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center'
+    flexDirection: "row",
+    flexWrap: "wrap",
+    paddingHorizontal: 10,
+    justifyContent: "center",
   },
   colorSquare: {
     width: 100,
     height: 100,
     margin: 4,
     borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: "center",
+    justifyContent: "center",
   },
   colorName: {
-    color: '#555', 
-    fontWeight: '600', 
-    fontSize: 14
-  }
+    color: "#555",
+    fontWeight: "600",
+    fontSize: 14,
+  },
+  closeBox: {
+    display: "flex",
+    width: "100%",
+    alignItems: "flex-end",
+    paddingEnd: 60,
+    paddingTop: 20,
+  },
 });
 
 export default ColorPicker;
